@@ -1,5 +1,4 @@
 {
-  "presets": ["react"],
   "plugins": ["dev-expression", "transform-runtime"],
 
   "env": {
