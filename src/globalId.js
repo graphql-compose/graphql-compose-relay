@@ -1,6 +1,6 @@
 /* @flow */
 
-import {
+import type {
   ResolvedGlobalId,
   Base64String,
 } from './definition.js';

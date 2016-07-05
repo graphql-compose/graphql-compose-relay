@@ -4,13 +4,22 @@
 import { ResolverMiddleware, TypeComposer } from 'graphql-compose';
 import { GraphQLID, GraphQLString, GraphQLObjectType } from 'graphql';
 import { toGlobalId } from './globalId';
+import type {
+  ResolverMWArgsFn,
+  ResolverMWArgs,
+  ResolverMWResolveFn,
+  ResolverMWResolve,
+  ResolverMWOutputTypeFn,
+  ResolverMWOutputType,
+} from './definition';
 
-export class MutationMiddleware extends ResolverMiddleware {
+
+export default class MutationMiddleware extends ResolverMiddleware {
   // constructor(typeComposer, opts = {}) {
   //   super(typeComposer, opts);
   // }
 
-  args = (next) => (args) => {
+  args:ResolverMWArgs = (next: ResolverMWArgsFn) => (args) => {
     const nextArgs = next(args);
 
     if (!nextArgs.clientMutationId) {
@@ -25,7 +34,7 @@ export class MutationMiddleware extends ResolverMiddleware {
   };
 
 
-  resolve = (next) => (resolveParams) => {
+  resolve:ResolverMWResolve = (next: ResolverMWResolveFn) => (resolveParams) => {
     let clientMutationId;
 
     if (resolveParams && resolveParams.args && resolveParams.args.input
@@ -48,7 +57,7 @@ export class MutationMiddleware extends ResolverMiddleware {
   };
 
 
-  outputType = (next) => (outputType) => {
+  outputType:ResolverMWOutputType = (next: ResolverMWOutputTypeFn) => (outputType) => {
     const nextOutputType = next(outputType);
 
     if (!(nextOutputType instanceof GraphQLObjectType)) {

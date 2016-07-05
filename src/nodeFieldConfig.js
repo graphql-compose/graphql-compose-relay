@@ -7,9 +7,10 @@ import {
 } from 'graphql';
 import { fromGlobalId } from './globalId';
 import NodeInterface from './nodeInterface';
+import type { TypeComposerMap } from './definition.js';
 
 // this fieldConfig must be set to RootQuery.node field
-export function getNodeFieldConfig(typeComposerMap) {
+export function getNodeFieldConfig(typeComposerMap: TypeComposerMap) {
   return {
     description: 'Fetches an object that has globally unique ID among all types',
     type: NodeInterface,
@@ -19,7 +20,10 @@ export function getNodeFieldConfig(typeComposerMap) {
         description: 'The globally unique ID among all types',
       },
     },
-    resolve: (source, args, context, info) => {
+    resolve: (source: mixed, args: {[argName: string]: mixed}, context: mixed, info: mixed) => {
+      if (!args.id || !(typeof args.id === 'string')) {
+        return null;
+      }
       const { type, id } = fromGlobalId(args.id);
 
       const typeComposer = typeComposerMap[type];
