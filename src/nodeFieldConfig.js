@@ -7,10 +7,10 @@ import {
 } from 'graphql';
 import { fromGlobalId } from './globalId';
 import NodeInterface from './nodeInterface';
-import type { TypeComposerMap } from './definition.js';
+import type { TypeFindByIdMap } from './definition.js';
 
 // this fieldConfig must be set to RootQuery.node field
-export function getNodeFieldConfig(typeComposerMap: TypeComposerMap) {
+export function getNodeFieldConfig(typeToFindByIdMap: TypeFindByIdMap) {
   return {
     description: 'Fetches an object that has globally unique ID among all types',
     type: NodeInterface,
@@ -26,21 +26,20 @@ export function getNodeFieldConfig(typeComposerMap: TypeComposerMap) {
       }
       const { type, id } = fromGlobalId(args.id);
 
-      const typeComposer = typeComposerMap[type];
-      if (!typeComposer) {
-        return null;
-      }
-
-      const resolver = typeComposer.getResolver('findById');
-      if (resolver && resolver.resolve) {
+      const findById = typeToFindByIdMap[type];
+      if (findById && findById.resolve) {
         // suppose that first argument is argument with id field
-        const idArgName = Object.keys(resolver.args)[0];
-
-        return resolver.resolve({
+        const idArgName = Object.keys(findById.args)[0];
+        return findById.resolve({
           source,
-          args: { [idArgName]: id },
+          args: { [idArgName]: id }, // eg. mongoose has _id fieldname, so should map
           context,
           info,
+        }).then(res => {
+          if (res) {
+            res.__nodeType = findById.getTypeComposer().getType();
+          }
+          return res;
         });
       }
 

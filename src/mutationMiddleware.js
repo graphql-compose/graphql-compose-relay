@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import { ResolverMiddleware, TypeComposer } from 'graphql-compose';
+import { ResolverMiddleware, TypeComposer, InputTypeComposer } from 'graphql-compose';
 import { GraphQLID, GraphQLString, GraphQLObjectType } from 'graphql';
 import { toGlobalId } from './globalId';
 import type {
@@ -15,19 +15,23 @@ import type {
 
 
 export default class MutationMiddleware extends ResolverMiddleware {
+  // middleware has constructor
   // constructor(typeComposer, opts = {}) {
   //   super(typeComposer, opts);
+  //   // some setup staff
   // }
 
   args:ResolverMWArgs = (next: ResolverMWArgsFn) => (args) => {
     const nextArgs = next(args);
-
-    if (!nextArgs.clientMutationId) {
-      nextArgs.clientMutationId = {
-        type: GraphQLString,
-        description: 'The client mutation ID used by clients like Relay to track the mutation. '
-                   + 'If given, returned in the response payload of the mutation.',
-      };
+    if (nextArgs.input && nextArgs.input.type) {
+      const itc = new InputTypeComposer(nextArgs.input.type);
+      if (!itc.hasField('clientMutationId')) {
+        itc.addField('clientMutationId', {
+          type: GraphQLString,
+          description: 'The client mutation ID used by clients like Relay to track the mutation. '
+                     + 'If given, returned in the response payload of the mutation.',
+        });
+      }
     }
 
     return nextArgs;
@@ -37,17 +41,18 @@ export default class MutationMiddleware extends ResolverMiddleware {
   resolve:ResolverMWResolve = (next: ResolverMWResolveFn) => (resolveParams) => {
     let clientMutationId;
 
-    if (resolveParams && resolveParams.args && resolveParams.args.input
-        && resolveParams.args.input.clientMutationId) {
-      clientMutationId = resolveParams.args.input.clientMutationId;
-      delete resolveParams.args.input.clientMutationId;
+    if (resolveParams && resolveParams.args) {
+      if (resolveParams.args.input && resolveParams.args.input.clientMutationId) {
+        clientMutationId = resolveParams.args.input.clientMutationId;
+        delete resolveParams.args.input.clientMutationId;
+      }
     }
 
     return next(resolveParams)
       .then(res => {
         res.nodeId = toGlobalId(
           this.typeComposer.getTypeName(),
-          this.typeComposer.getRecordId(res),
+          res.recordId,
         );
         if (clientMutationId) {
           res.clientMutationId = clientMutationId;

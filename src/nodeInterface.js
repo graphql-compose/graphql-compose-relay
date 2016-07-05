@@ -15,10 +15,10 @@ const NodeInterface = new GraphQLInterfaceType({
       description: 'The globally unique ID among all types.',
     },
   }),
-  resolveType: (payload) => (
-    // `payload._nodeTypeName` was added to type via composeWithRelay
-    payload._nodeTypeName ? payload._nodeTypeName : null
-  ),
+  resolveType: (payload) => {
+    // `payload.__nodeType` was added to payload via nodeFieldConfig.resolve
+    return payload.__nodeType ? payload.__nodeType : null;
+  },
 });
 
 export default NodeInterface;

@@ -23,11 +23,13 @@ export type ResolverMWOutputType = _ResolverMWOutputType;
 
 import type {
   TypeComposer as _TypeComposer,
+  Resolver as _Resolver,
 } from 'graphql-compose';
 
+export type Resolver = _Resolver;
 export type ResolveParams = _ResolveParams;
 export type TypeComposer = _TypeComposer;
-export type TypeComposerMap = {[typeName: string]: TypeComposer};
+export type TypeFindByIdMap = {[typeName: string]: Resolver};
 
 
 // INTERNAL TYPES
