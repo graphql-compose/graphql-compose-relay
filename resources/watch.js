@@ -13,7 +13,10 @@ function exec(command, options) {
   return new Promise((resolve, reject) => {
     var child = spawn(command, options, {
       cmd: cmd,
-      env: process.env,
+      env: {
+        ...process.env,
+        BABEL_ENV: 'cjs',
+      },
       stdio: 'inherit'
     });
     child.on('exit', code => {
@@ -125,7 +128,7 @@ function runTests(filepaths) {
       ['src/**/__tests__/**/*-test.js']
   );
   // console.log(cmd);
-  return exec('node', cmd).catch(() => false);
+  return exec('babel-node', cmd).catch(() => false);
 }
 
 function lintFiles(filepaths) {

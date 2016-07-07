@@ -13,7 +13,6 @@ import type {
   ResolverMWOutputType,
 } from './definition';
 
-
 export default class MutationMiddleware extends ResolverMiddleware {
   // middleware has constructor
   // constructor(typeComposer, opts = {}) {
@@ -52,7 +51,7 @@ export default class MutationMiddleware extends ResolverMiddleware {
       .then(res => {
         res.nodeId = toGlobalId(
           this.typeComposer.getTypeName(),
-          res.recordId,
+          res.recordId
         );
         if (clientMutationId) {
           res.clientMutationId = clientMutationId;

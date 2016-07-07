@@ -9,21 +9,22 @@ Example
 import composeWithRelay from 'graphql-compose-relay';
 
 composeWithRelay(rootQueryTypeComposer); // add `node` field to RootQuery
-composeWithRelay(userTypeComposer); // wrap Type with middlewares, that add fields and tune resolver.
+composeWithRelay(userTypeComposer); // wrap Type with middlewares, that add relay's fields and tune resolver.
 composeWithRelay(someOtherTypeComposer);
 ```
 That's all!
-- No annoying `clientMutationId` manipulations (declaration, passthru, stripping from input).
-- Add `id` field to type (or wrap it). This field returns globally unique ID among all types in format `base64(TypeName + ':' + recordId)`  
-All done internally by middleware for you.
+No annoying `clientMutationId` manipulations (declaration, passthru, stripping from input).
+No manual adding/wrapping `id` field. This field returns globally unique ID among all types in format `base64(TypeName + ':' + recordId)`.  
+All relay magic done internally by middleware for you.
 
 Requirements
 ============
-TypeComposer should follow following requirements:
+Method `composeWithRelay` accept `TypeComposer` as input argument. So `TypeComposer` should meet following requirements:
 - has defined `recordIdFn` (function that from object gives you id)
 - should have `findById` resolver
+If something is missing `composeWithRelay` throws error.
 
-About `TypeComposer` you may read here [graphql-compose](https://github.com/nodkz/graphql-compose)
+`TypeComposer` is [graphql-compose](https://github.com/nodkz/graphql-compose) utility, that wraps GraphQL type and provide bunch of useful methods for type manipulation.
 
 Compatible plugins
 ==================

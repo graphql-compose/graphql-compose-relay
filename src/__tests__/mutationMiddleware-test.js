@@ -38,7 +38,7 @@ describe('MutationMiddleware', () => {
     it('should passthru `clientMutationId`', async () => {
       const result = await fieldConfig.resolve(
         {},
-        { input: { clientMutationId: '333' } },
+        { input: { clientMutationId: '333' } }
       );
       expect(result).property('clientMutationId').equal('333');
     });
@@ -46,7 +46,7 @@ describe('MutationMiddleware', () => {
     it('should return `nodeId` with globalId', async () => {
       const result = await fieldConfig.resolve(
         {},
-        { input: { id: 'newRecord' } },
+        { input: { id: 'newRecord' } }
       );
       expect(result).property('nodeId').equal(toGlobalId('User', 'newRecord'));
     });
