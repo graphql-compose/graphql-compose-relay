@@ -9,7 +9,7 @@ import {
 
 describe('nodeFieldConfig', () => {
   const typeToFindByIdMap = {
-    'User': findByIdResolver,
+    User: findByIdResolver,
   };
   const config = getNodeFieldConfig(typeToFindByIdMap);
 
