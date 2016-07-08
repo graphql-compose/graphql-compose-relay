@@ -6,17 +6,51 @@ import { toGlobalId } from '../globalId';
 import {
   GraphQLString,
   GraphQLID,
+  GraphQLNonNull,
+  getNamedType,
 } from 'graphql';
 
 describe('MutationMiddleware', () => {
   composeWithRelay(userTypeComposer);
   const fieldConfig = userTypeComposer.getResolver('createOne').getFieldConfig();
+  const fieldConfigManyArgsWithInput
+    = userTypeComposer.getResolver('manyArgsWithInput').getFieldConfig();
+  const fieldConfigManyArgsWithoutInput
+    = userTypeComposer.getResolver('manyArgsWithoutInput').getFieldConfig();
 
   describe('args', () => {
     it('should add `clientMutationId` field to args.input', () => {
       const itc = new InputTypeComposer(fieldConfig.args.input.type);
       expect(itc.hasField('clientMutationId')).to.be.true;
       expect(itc.getFieldType('clientMutationId')).equal(GraphQLString);
+    });
+
+
+    it('should create required args.input! if not exists', () => {
+      expect(fieldConfigManyArgsWithoutInput.args).property('input').to.be.ok;
+
+      expect(fieldConfigManyArgsWithoutInput.args)
+        .deep.property('input.type').instanceof(GraphQLNonNull);
+    });
+
+    it('should create args.input if not exists and move all args into it', () => {
+      expect(fieldConfigManyArgsWithoutInput.args).to.have.all.keys(['input']);
+
+      const type = getNamedType(fieldConfigManyArgsWithoutInput.args.input.type);
+      const itc = new InputTypeComposer(type);
+      expect(itc.hasField('sort')).to.be.true;
+      expect(itc.hasField('limit')).to.be.true;
+      expect(itc.hasField('clientMutationId')).to.be.true;
+    });
+
+    it('should leave other arg untouched if args.input exists', () => {
+      expect(fieldConfigManyArgsWithInput.args).to.have.all.keys(['input', 'sort', 'limit']);
+
+      const type = getNamedType(fieldConfigManyArgsWithInput.args.input.type);
+      const itc = new InputTypeComposer(type);
+      expect(itc.hasField('sort')).to.be.false;
+      expect(itc.hasField('limit')).to.be.false;
+      expect(itc.hasField('clientMutationId')).to.be.true;
     });
   });
 

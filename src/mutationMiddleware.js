@@ -2,7 +2,14 @@
 /* eslint-disable no-param-reassign */
 
 import { ResolverMiddleware, TypeComposer, InputTypeComposer } from 'graphql-compose';
-import { GraphQLID, GraphQLString, GraphQLObjectType } from 'graphql';
+import {
+  GraphQLID,
+  GraphQLString,
+  GraphQLObjectType,
+  getNamedType,
+  GraphQLInputObjectType,
+  GraphQLNonNull,
+} from 'graphql';
 import { toGlobalId } from './globalId';
 import type {
   ResolverMWArgsFn,
@@ -15,25 +22,44 @@ import type {
 
 export default class MutationMiddleware extends ResolverMiddleware {
   // middleware has constructor
-  // constructor(typeComposer, opts = {}) {
+  // constructor(typeComposer, typeResolver, opts = {}) {
   //   super(typeComposer, opts);
   //   // some setup staff
   // }
 
   args:ResolverMWArgs = (next: ResolverMWArgsFn) => (args) => {
     const nextArgs = next(args);
+    let inputTC: InputTypeComposer;
+    let newNextArgs = {};
+
     if (nextArgs.input && nextArgs.input.type) {
-      const itc = new InputTypeComposer(nextArgs.input.type);
-      if (!itc.hasField('clientMutationId')) {
-        itc.addField('clientMutationId', {
-          type: GraphQLString,
-          description: 'The client mutation ID used by clients like Relay to track the mutation. '
-                     + 'If given, returned in the response payload of the mutation.',
-        });
-      }
+      // pass args unchanged
+      inputTC = new InputTypeComposer(getNamedType(nextArgs.input.type));
+      newNextArgs = nextArgs;
+    } else {
+      // create input arg, and put into all current args
+      inputTC = new InputTypeComposer(new GraphQLInputObjectType({
+        name: `Relay${this.typeResolver.getNameCamelCase()}${this.typeComposer.getTypeName()}Input`,
+        fields: nextArgs,
+      }));
+      newNextArgs = {
+        input: {
+          name: 'input',
+          type: new GraphQLNonNull(inputTC.getType()),
+        },
+      };
     }
 
-    return nextArgs;
+    // add `clientMutationId` to args.input field
+    if (!inputTC.hasField('clientMutationId')) {
+      inputTC.addField('clientMutationId', {
+        type: GraphQLString,
+        description: 'The client mutation ID used by clients like Relay to track the mutation. '
+                   + 'If given, returned in the response payload of the mutation.',
+      });
+    }
+
+    return newNextArgs;
   };
 
 

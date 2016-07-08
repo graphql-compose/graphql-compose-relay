@@ -56,7 +56,7 @@ export function composeWithRelay(
 
   typeComposer.getResolvers().forEach(resolver => {
     if (resolver.kind === 'mutation') {
-      resolver.addMiddleware(new MutationMiddleware(typeComposer));
+      resolver.addMiddleware(new MutationMiddleware(typeComposer, resolver));
     }
   });
 

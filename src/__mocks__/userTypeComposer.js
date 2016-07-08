@@ -86,3 +86,72 @@ export const createOneResolver = new Resolver(userTypeComposer, {
     });
   },
 });
+
+export const manyArgsWithInputResolver = new Resolver(userTypeComposer, {
+  name: 'manyArgsWithInput',
+  kind: 'mutation',
+  outputType: new GraphQLObjectType({
+    name: 'UserPayload',
+    fields: {
+      record: {
+        type: UserType,
+      },
+    },
+  }),
+  args: {
+    input: {
+      name: 'input',
+      type: new GraphQLInputObjectType({
+        name: 'UserInput',
+        fields: {
+          name: {
+            type: GraphQLString,
+          },
+        },
+      }),
+    },
+    sort: {
+      name: 'sort',
+      type: GraphQLString,
+    },
+    limit: {
+      name: 'limit',
+      type: GraphQLInt,
+    },
+  },
+  resolve: (resolveParams) => {
+    return Promise.resolve({
+      recordId: resolveParams.args.input.id,
+      record: resolveParams.args && resolveParams.args.input || {},
+    });
+  },
+});
+
+export const manyArgsWithoutInputResolver = new Resolver(userTypeComposer, {
+  name: 'manyArgsWithoutInput',
+  kind: 'mutation',
+  outputType: new GraphQLObjectType({
+    name: 'UserPayload',
+    fields: {
+      record: {
+        type: UserType,
+      },
+    },
+  }),
+  args: {
+    sort: {
+      name: 'sort',
+      type: GraphQLString,
+    },
+    limit: {
+      name: 'limit',
+      type: GraphQLInt,
+    },
+  },
+  resolve: (resolveParams) => {
+    return Promise.resolve({
+      recordId: resolveParams.args.input.id,
+      record: resolveParams.args && resolveParams.args.input || {},
+    });
+  },
+});

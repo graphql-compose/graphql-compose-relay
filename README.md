@@ -13,29 +13,33 @@ import { TypeComposer } from 'graphql-compose';
 import { RootQueryType, UserType } from './my-graphq-object-types';
 
 const rootQueryTypeComposer = new TypeComposer(RootQueryType);
-const userTypeComposer = new TypeComposer(UserType); 
+const userTypeComposer = new TypeComposer(UserType);
 
-// If passed RootQuery, then will be added only `node` field to this type. 
+// If passed RootQuery, then will be added only `node` field to this type.
 // Via RootQuery.node you may find objects by globally unique ID among all types.
-composeWithRelay(rootQueryTypeComposer); 
+composeWithRelay(rootQueryTypeComposer);
 
 // Other types, like User, will be wrapped with middlewares that:
 // - add relay's id field. Field will be added or wrapped to return Relay's globally unique ID.
 // - for mutations will be added clientMutationId to input and output objects types
 // - this type will be added to NodeInterface for resolving via RootQuery.node
-composeWithRelay(userTypeComposer); 
+composeWithRelay(userTypeComposer);
 ```
 That's all!
 
-No annoying `clientMutationId` manipulations (declaration, passthru, stripping from input).
-No manual adding/wrapping `id` field. This field returns globally unique ID among all types in format `base64(TypeName + ':' + recordId)`.  
-All relay magic done internally by middleware for you.
+All mutations resolvers' arguments will be placed into `input` field, and added `clientMutationId`. If `input` fields already exists in resolver, then  `clientMutationId` will be added to it, rest argument stays untouched. Accepted value via `args.input.clientMutationId` will be transfer to `payload.clientMutationId`, as Relay required it.
+
+To all wrapped Types with Relay, will be added `id` field or wrapped, if it exist already. This field will return globally unique ID among all types in the following format `base64(TypeName + ':' + recordId)`.  
+
+For `RootQuery` will be added `node` field, that will resolve by globalId only that types, which you wrap with `composeWithRelay`.
+
+All this annoying operations is too fatigue to do by hands. So this middleware done all Relay magic implicitly for you.
 
 Requirements
 ============
 Method `composeWithRelay` accept `TypeComposer` as input argument. So `TypeComposer` should meet following requirements:
-- has defined `recordIdFn` (function that from object gives you id)
-- should have `findById` resolver
+- has defined `recordIdFn` (function that from object of this type, returns you id for the globalId construction)
+- should have `findById` resolver (that will be used by `RootQuery.node`)
 
 If something is missing `composeWithRelay` throws error.
 
