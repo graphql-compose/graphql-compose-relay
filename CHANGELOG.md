@@ -1,5 +1,8 @@
 ## master
 
+## 0.0.3 (July 08, 2016)
+* mutationMiddleware move all args into `input!` arg, if `input` exists add only `clientMutationId` to it and leave rest args untouched.
+
 ## 0.0.2 (July 07, 2016)
 * realized `RootQuery.node` field
 * mutationMiddleware for adding `clientMutationId` to input/output object types
