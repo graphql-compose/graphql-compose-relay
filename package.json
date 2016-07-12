@@ -1,7 +1,7 @@
 {
   "name": "graphql-compose-relay",
   "version": "0.0.3",
-  "description": "Plugin for `graphql-mongoose` which wraps graphql types with Relay specific logic.",
+  "description": "Plugin for `graphql-compose` which wraps graphql types with Relay specific logic.",
   "files": [
     "es",
     "lib"
