@@ -1,5 +1,9 @@
 ## master
 
+## 1.0.0 (July 15, 2016)
+* update `graphql-compose` till 0.0.6
+* small fixes
+
 ## 0.0.3 (July 08, 2016)
 * mutationMiddleware move all args into `input!` arg, if `input` exists add only `clientMutationId` to it and leave rest args untouched.
 
