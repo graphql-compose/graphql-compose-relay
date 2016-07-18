@@ -1,5 +1,11 @@
 ## master
 
+## 1.0.1 (July 18, 2016)
+* Fix flow-type errors
+* Update `flow-bin` till 0.29
+* Fix `peerDependencies`
+* Update `graphql-compose` till 0.0.7
+
 ## 1.0.0 (July 15, 2016)
 * update `graphql-compose` till 0.0.6
 * small fixes
