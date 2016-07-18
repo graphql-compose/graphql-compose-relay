@@ -4,6 +4,13 @@ This is a plugin for [graphql-compose](https://github.com/nodkz/graphql-compose)
 
 [CHANGELOG](https://github.com/nodkz/graphql-compose-relay/blob/master/CHANGELOG.md)
 
+Installation
+============
+```
+npm install graphql graphql-compose graphql-compose-relay --save
+```
+Modules `graphql` and `graphql-compose` are in `peerDependencies`, so should be installed explicitly in your app. They have global objects and should not have ability to be installed as submodule.
+
 Example
 =======
 `TypeComposer` is a [graphql-compose](https://github.com/nodkz/graphql-compose) utility, that wraps GraphQL types and provide bunch of useful methods for type manipulation.

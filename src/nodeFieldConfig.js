@@ -8,6 +8,7 @@ import {
 import { fromGlobalId } from './globalId';
 import NodeInterface from './nodeInterface';
 import type { TypeFindByIdMap } from './definition.js';
+import { getProjectionFromAST } from 'graphql-compose';
 
 // this fieldConfig must be set to RootQuery.node field
 export function getNodeFieldConfig(typeToFindByIdMap: TypeFindByIdMap) {
@@ -35,6 +36,7 @@ export function getNodeFieldConfig(typeToFindByIdMap: TypeFindByIdMap) {
           args: { [idArgName]: id }, // eg. mongoose has _id fieldname, so should map
           context,
           info,
+          projection: getProjectionFromAST(info),
         }).then(res => {
           if (res) {
             res.__nodeType = findById.getTypeComposer().getType();
