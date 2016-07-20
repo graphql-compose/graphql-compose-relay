@@ -1,5 +1,8 @@
 ## master
 
+## 1.0.3 (July 21, 2016)
+* Fix: unwrapping args for the underlying resolvers
+
 ## 1.0.2 (July 20, 2016)
 * Expose `NodeInterface`, `nodeFieldConfig`, `fromGlobalId`, `toGlobalId`.
 
