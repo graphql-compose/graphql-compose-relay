@@ -1,5 +1,8 @@
 ## master
 
+## 1.0.2 (July 20, 2016)
+* Expose `NodeInterface`, `nodeFieldConfig`, `fromGlobalId`, `toGlobalId`.
+
 ## 1.0.1 (July 18, 2016)
 * Fix flow-type errors
 * Update `flow-bin` till 0.29

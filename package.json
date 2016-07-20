@@ -1,6 +1,6 @@
 {
   "name": "graphql-compose-relay",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Plugin for `graphql-compose` which wraps graphql types with Relay specific logic.",
   "files": [
     "es",
