@@ -10,7 +10,8 @@ import { getNodeFieldConfig } from './nodeFieldConfig';
 
 // all wrapped typeComposers with Relay, stored in this variable
 // for futher type resolving via NodeInterface.resolveType method
-const typeComposerMap = {};
+export const typeComposerMap = {};
+export const nodeFieldConfig = getNodeFieldConfig(typeComposerMap);
 
 export function composeWithRelay(
   typeComposer: TypeComposer
@@ -20,7 +21,7 @@ export function composeWithRelay(
   }
 
   if (typeComposer.getTypeName() === 'RootQuery') {
-    typeComposer.addField('node', getNodeFieldConfig(typeComposerMap));
+    typeComposer.addField('node', nodeFieldConfig);
     return typeComposer;
   }
 
