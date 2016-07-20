@@ -12,6 +12,7 @@ import {
 } from 'graphql';
 import { toGlobalId } from './globalId';
 import type {
+  Resolver,
   ResolverMWArgsFn,
   ResolverMWArgs,
   ResolverMWResolveFn,
@@ -21,11 +22,11 @@ import type {
 } from './definition';
 
 export default class MutationMiddleware extends ResolverMiddleware {
-  // middleware has constructor
-  // constructor(typeComposer, typeResolver, opts = {}) {
-  //   super(typeComposer, opts);
-  //   // some setup staff
-  // }
+  constructor(typeComposer: TypeComposer, typeResolver: Resolver, opts: mixed = {}) {
+    super(typeComposer, typeResolver, opts);
+
+    this.isArgsWrapped = false;
+  }
 
   args:ResolverMWArgs = (next: ResolverMWArgsFn) => (args) => {
     const nextArgs = next(args);
@@ -34,7 +35,6 @@ export default class MutationMiddleware extends ResolverMiddleware {
 
     if (nextArgs.input && nextArgs.input.type) {
       // pass args unchanged
-      // $FlowFixMe
       inputTC = new InputTypeComposer(getNamedType(nextArgs.input.type));
       newNextArgs = nextArgs;
     } else {
@@ -49,6 +49,7 @@ export default class MutationMiddleware extends ResolverMiddleware {
           type: new GraphQLNonNull(inputTC.getType()),
         },
       };
+      this.isArgsWrapped = true;
     }
 
     // add `clientMutationId` to args.input field
@@ -72,6 +73,11 @@ export default class MutationMiddleware extends ResolverMiddleware {
         clientMutationId = resolveParams.args.input.clientMutationId;
         delete resolveParams.args.input.clientMutationId;
       }
+    }
+
+    if (this.isArgsWrapped) {
+      // $FlowFixMe
+      resolveParams.args = resolveParams.args.input;
     }
 
     return next(resolveParams)
