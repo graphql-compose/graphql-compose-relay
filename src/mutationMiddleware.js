@@ -34,6 +34,7 @@ export default class MutationMiddleware extends ResolverMiddleware {
 
     if (nextArgs.input && nextArgs.input.type) {
       // pass args unchanged
+      // $FlowFixMe
       inputTC = new InputTypeComposer(getNamedType(nextArgs.input.type));
       newNextArgs = nextArgs;
     } else {

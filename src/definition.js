@@ -9,6 +9,7 @@ import type {
   ResolverMWResolve as _ResolverMWResolve,
   ResolverMWOutputTypeFn as _ResolverMWOutputTypeFn,
   ResolverMWOutputType as _ResolverMWOutputType,
+  GraphQLResolveInfo as _GraphQLResolveInfo,
 } from 'graphql-compose/lib/definition.js';
 
 export type ResolverMWArgsFn = _ResolverMWArgsFn;
@@ -20,6 +21,7 @@ export type ResolverMWResolve = _ResolverMWResolve;
 export type ResolverMWOutputTypeFn = _ResolverMWOutputTypeFn;
 export type ResolverMWOutputType = _ResolverMWOutputType;
 
+export type GraphQLResolveInfo = _GraphQLResolveInfo;
 
 import type {
   TypeComposer as _TypeComposer,

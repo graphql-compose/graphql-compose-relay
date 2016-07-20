@@ -7,7 +7,7 @@ import {
 } from 'graphql';
 import { fromGlobalId } from './globalId';
 import NodeInterface from './nodeInterface';
-import type { TypeFindByIdMap } from './definition.js';
+import type { TypeFindByIdMap, GraphQLResolveInfo } from './definition.js';
 import { getProjectionFromAST } from 'graphql-compose';
 
 // this fieldConfig must be set to RootQuery.node field
@@ -21,7 +21,12 @@ export function getNodeFieldConfig(typeToFindByIdMap: TypeFindByIdMap) {
         description: 'The globally unique ID among all types',
       },
     },
-    resolve: (source: mixed, args: {[argName: string]: mixed}, context: mixed, info: mixed) => {
+    resolve: (
+      source: mixed,
+      args: {[argName: string]: mixed},
+      context: mixed,
+      info: GraphQLResolveInfo
+    ) => {
       if (!args.id || !(typeof args.id === 'string')) {
         return null;
       }
