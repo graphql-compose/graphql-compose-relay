@@ -2,6 +2,8 @@ graphql-compose-relay
 ======================
 This is a plugin for [graphql-compose](https://github.com/nodkz/graphql-compose), which wraps GraphQL types with Relay specific things, like `Node` type and interface, `globalId`, `clientMutationId`.
 
+Live demo: [https://graphql-compose.herokuapp.com/](https://graphql-compose.herokuapp.com/)
+
 [CHANGELOG](https://github.com/nodkz/graphql-compose-relay/blob/master/CHANGELOG.md)
 
 Installation
