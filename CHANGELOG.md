@@ -1,5 +1,8 @@
 ## master
 
+## 1.0.7 (August 25, 2016)
+- fix: `projection` in `node(id)` resolve method, now it correctly adds required fields for `relations`
+
 ## 1.0.6 (August 15, 2016)
 - fix: babel build via the workaround https://phabricator.babeljs.io/T2877#78089 Huh, it's too tricky to use Map/Set in ES5.
 
