@@ -1,14 +1,11 @@
 /* @flow */
-/* eslint-disable no-param-reassign */
+/* eslint-disable no-param-reassign, import/prefer-default-export */
 
-import {
-  GraphQLID,
-  GraphQLNonNull,
-} from 'graphql';
+import { GraphQLID, GraphQLNonNull } from 'graphql';
+import { getProjectionFromAST } from 'graphql-compose';
 import { fromGlobalId } from './globalId';
 import NodeInterface from './nodeInterface';
 import type { TypeFindByIdMap, GraphQLResolveInfo } from './definition.js';
-import { getProjectionFromAST } from 'graphql-compose';
 
 // this fieldConfig must be set to RootQuery.node field
 export function getNodeFieldConfig(typeToFindByIdMap: TypeFindByIdMap) {
@@ -34,6 +31,14 @@ export function getNodeFieldConfig(typeToFindByIdMap: TypeFindByIdMap) {
 
       const findById = typeToFindByIdMap[type];
       if (findById && findById.resolve) {
+        const tc = findById.getTypeComposer();
+        const graphqlType = tc.getType();
+
+        // set `returnType` to `info` for proper work of `getProjectionFromAST`
+        // it will correctly add required fields for `relation` to `projection`
+        info.returnType = graphqlType;
+        const projection = getProjectionFromAST(info);
+
         // suppose that first argument is argument with id field
         const idArgName = Object.keys(findById.args)[0];
         return findById.resolve({
@@ -41,11 +46,10 @@ export function getNodeFieldConfig(typeToFindByIdMap: TypeFindByIdMap) {
           args: { [idArgName]: id }, // eg. mongoose has _id fieldname, so should map
           context,
           info,
-          projection: getProjectionFromAST(info),
+          projection,
         }).then(res => {
-          if (res) {
-            res.__nodeType = findById.getTypeComposer().getType();
-          }
+          if (!res) return res;
+          res.__nodeType = graphqlType;
           return res;
         });
       }
