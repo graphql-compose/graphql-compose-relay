@@ -36,8 +36,13 @@ export function getNodeFieldConfig(typeToFindByIdMap: TypeFindByIdMap) {
 
         // set `returnType` to `info` for proper work of `getProjectionFromAST`
         // it will correctly add required fields for `relation` to `projection`
-        info.returnType = graphqlType;
-        const projection = getProjectionFromAST(info);
+        let projection;
+        if (info) {
+          info.returnType = graphqlType;
+          projection = getProjectionFromAST(info);
+        } else {
+          projection = {};
+        }
 
         // suppose that first argument is argument with id field
         const idArgName = Object.keys(findById.args)[0];
