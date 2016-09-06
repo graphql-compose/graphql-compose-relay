@@ -6,6 +6,7 @@ import {
   GraphQLInterfaceType,
 } from 'graphql';
 
+
 const NodeInterface = new GraphQLInterfaceType({
   name: 'Node',
   description: 'An object, that can be fetched by the globally unique ID among all types.',
@@ -17,6 +18,7 @@ const NodeInterface = new GraphQLInterfaceType({
   }),
   resolveType: (payload) => {
     // `payload.__nodeType` was added to payload via nodeFieldConfig.resolve
+    // $FlowFixMe
     return payload.__nodeType ? payload.__nodeType : null;
   },
 });

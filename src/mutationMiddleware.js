@@ -1,7 +1,6 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import { ResolverMiddleware, TypeComposer, InputTypeComposer } from 'graphql-compose';
 import {
   GraphQLID,
   GraphQLString,
@@ -10,6 +9,7 @@ import {
   GraphQLInputObjectType,
   GraphQLNonNull,
 } from 'graphql';
+import { ResolverMiddleware, TypeComposer, InputTypeComposer } from 'graphql-compose';
 import { toGlobalId } from './globalId';
 import type {
   Resolver,
@@ -19,10 +19,14 @@ import type {
   ResolverMWResolve,
   ResolverMWOutputTypeFn,
   ResolverMWOutputType,
+  ObjectMap,
 } from './definition';
 
+
 export default class MutationMiddleware extends ResolverMiddleware {
-  constructor(typeComposer: TypeComposer, typeResolver: Resolver, opts: mixed = {}) {
+  isArgsWrapped: boolean;
+
+  constructor(typeComposer: TypeComposer, typeResolver: Resolver, opts: ObjectMap = {}) {
     super(typeComposer, typeResolver, opts);
 
     this.isArgsWrapped = false;
@@ -35,7 +39,10 @@ export default class MutationMiddleware extends ResolverMiddleware {
 
     if (nextArgs.input && nextArgs.input.type) {
       // pass args unchanged
-      inputTC = new InputTypeComposer(getNamedType(nextArgs.input.type));
+      const inputNamedType = getNamedType(nextArgs.input.type);
+      if (inputNamedType instanceof GraphQLInputObjectType) {
+        inputTC = new InputTypeComposer(inputNamedType);
+      }
       newNextArgs = nextArgs;
     } else {
       // create input arg, and put into all current args
@@ -53,7 +60,7 @@ export default class MutationMiddleware extends ResolverMiddleware {
     }
 
     // add `clientMutationId` to args.input field
-    if (!inputTC.hasField('clientMutationId')) {
+    if (inputTC && !inputTC.hasField('clientMutationId')) {
       inputTC.addField('clientMutationId', {
         type: GraphQLString,
         description: 'The client mutation ID used by clients like Relay to track the mutation. '
