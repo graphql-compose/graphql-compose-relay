@@ -4,7 +4,9 @@
   "rules": {
     "no-underscore-dangle": 0,
     "no-unused-expressions": 0,
-    "arrow-body-style": 0
+    "arrow-body-style": 0,
+    "import/prefer-default-export": 0,
+    "import/no-extraneous-dependencies": 0
   },
   "env": {
     "mocha": true
