@@ -1,5 +1,10 @@
 ## master
 
+## 1.0.8 (September 6, 2016)
+- Update dependencies
+- Flowtype 0.32
+- Fix code style issues
+
 ## 1.0.7 (August 25, 2016)
 - fix: `projection` in `node(id)` resolve method, now it correctly adds required fields for `relations`
 
