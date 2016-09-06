@@ -1,16 +1,17 @@
 import { expect } from 'chai';
-import { TypeComposer } from 'graphql-compose';
-import { composeWithRelay } from '../composeWithRelay';
-import { userTypeComposer } from '../__mocks__/userTypeComposer';
-import { rootQueryTypeComposer } from '../__mocks__/rootQueryTypeComposer';
-import { rootMutationTypeComposer } from '../__mocks__/rootMutationTypeComposer';
-import { toGlobalId } from '../globalId';
 import {
   graphql,
   GraphQLInterfaceType,
   GraphQLSchema,
   GraphQLNonNull,
 } from 'graphql';
+import { TypeComposer } from 'graphql-compose';
+import { composeWithRelay } from '../composeWithRelay';
+import { userTypeComposer } from '../__mocks__/userTypeComposer';
+import { rootQueryTypeComposer } from '../__mocks__/rootQueryTypeComposer';
+import { rootMutationTypeComposer } from '../__mocks__/rootMutationTypeComposer';
+import { toGlobalId } from '../globalId';
+
 
 describe('composeWithRelay', () => {
   const userComposer = composeWithRelay(userTypeComposer);

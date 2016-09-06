@@ -1,11 +1,12 @@
 import { expect } from 'chai';
-import { findByIdResolver } from '../__mocks__/userTypeComposer';
-import { toGlobalId } from '../globalId';
-import { getNodeFieldConfig } from '../nodeFieldConfig';
 import {
   GraphQLInterfaceType,
   GraphQLNonNull,
 } from 'graphql';
+import { findByIdResolver } from '../__mocks__/userTypeComposer';
+import { toGlobalId } from '../globalId';
+import { getNodeFieldConfig } from '../nodeFieldConfig';
+
 
 describe('nodeFieldConfig', () => {
   const typeToFindByIdMap = {

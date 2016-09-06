@@ -1,14 +1,15 @@
 import { expect } from 'chai';
-import { TypeComposer, InputTypeComposer } from 'graphql-compose';
-import { composeWithRelay } from '../composeWithRelay';
-import { userTypeComposer } from '../__mocks__/userTypeComposer';
-import { toGlobalId } from '../globalId';
 import {
   GraphQLString,
   GraphQLID,
   GraphQLNonNull,
   getNamedType,
 } from 'graphql';
+import { TypeComposer, InputTypeComposer } from 'graphql-compose';
+import { composeWithRelay } from '../composeWithRelay';
+import { userTypeComposer } from '../__mocks__/userTypeComposer';
+import { toGlobalId } from '../globalId';
+
 
 describe('MutationMiddleware', () => {
   composeWithRelay(userTypeComposer);

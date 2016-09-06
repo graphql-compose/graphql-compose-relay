@@ -1,4 +1,3 @@
-import { TypeComposer, Resolver } from 'graphql-compose';
 import {
   GraphQLString,
   GraphQLObjectType,
@@ -6,6 +5,7 @@ import {
   GraphQLNonNull,
   GraphQLInt,
 } from 'graphql';
+import { TypeComposer, Resolver } from 'graphql-compose';
 
 export const UserType = new GraphQLObjectType({
   name: 'User',
@@ -82,7 +82,7 @@ export const createOneResolver = new Resolver(userTypeComposer, {
   resolve: (resolveParams) => {
     return Promise.resolve({
       recordId: resolveParams.args.input.id,
-      record: resolveParams.args && resolveParams.args.input || {},
+      record: (resolveParams.args && resolveParams.args.input) || {},
     });
   },
 });
@@ -122,7 +122,7 @@ export const manyArgsWithInputResolver = new Resolver(userTypeComposer, {
   resolve: (resolveParams) => {
     return Promise.resolve({
       recordId: resolveParams.args.input.id,
-      record: resolveParams.args && resolveParams.args.input || {},
+      record: (resolveParams.args && resolveParams.args.input) || {},
     });
   },
 });
@@ -151,7 +151,7 @@ export const manyArgsWithoutInputResolver = new Resolver(userTypeComposer, {
   resolve: (resolveParams) => {
     return Promise.resolve({
       recordId: resolveParams.args.input.id,
-      record: resolveParams.args && resolveParams.args.input || {},
+      record: (resolveParams.args && resolveParams.args.input) || {},
     });
   },
 });

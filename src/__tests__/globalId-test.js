@@ -6,6 +6,7 @@ import {
   fromGlobalId,
 } from '../globalId';
 
+
 describe('globalId', () => {
   it('should have correct method base64()', () => {
     expect(base64('123')).to.equal('MTIz');

@@ -7,6 +7,7 @@ import { fromGlobalId } from './globalId';
 import NodeInterface from './nodeInterface';
 import type { TypeFindByIdMap, GraphQLResolveInfo } from './definition.js';
 
+
 // this fieldConfig must be set to RootQuery.node field
 export function getNodeFieldConfig(typeToFindByIdMap: TypeFindByIdMap) {
   return {

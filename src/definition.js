@@ -12,6 +12,14 @@ import type {
   GraphQLResolveInfo as _GraphQLResolveInfo,
 } from 'graphql-compose/lib/definition.js';
 
+import type {
+  TypeComposer as _TypeComposer,
+  Resolver as _Resolver,
+} from 'graphql-compose';
+
+
+export type ObjectMap = { [optName: string]: mixed };
+
 export type ResolverMWArgsFn = _ResolverMWArgsFn;
 export type ResolverMWArgs = _ResolverMWArgs;
 
@@ -22,11 +30,6 @@ export type ResolverMWOutputTypeFn = _ResolverMWOutputTypeFn;
 export type ResolverMWOutputType = _ResolverMWOutputType;
 
 export type GraphQLResolveInfo = _GraphQLResolveInfo;
-
-import type {
-  TypeComposer as _TypeComposer,
-  Resolver as _Resolver,
-} from 'graphql-compose';
 
 export type Resolver = _Resolver;
 export type ResolveParams = _ResolveParams;
