@@ -1,5 +1,13 @@
-graphql-compose-relay
-======================
+# graphql-compose-relay
+
+[![travis build](https://img.shields.io/travis/nodkz/graphql-compose-relay.svg)](https://travis-ci.org/nodkz/graphql-compose-relay)
+[![codecov coverage](https://img.shields.io/codecov/c/github/nodkz/graphql-compose-relay.svg)](https://codecov.io/github/nodkz/graphql-compose-relay)
+[![](https://img.shields.io/npm/v/graphql-compose-relay.svg)](https://www.npmjs.com/package/graphql-compose-relay)
+[![npm](https://img.shields.io/npm/dt/graphql-compose-relay.svg)](https://www.npmjs.com/package/graphql-compose-relay)
+[![Join the chat at https://gitter.im/graphql-compose/Lobby](https://badges.gitter.im/nodkz/graphql-compose.svg)](https://gitter.im/graphql-compose/Lobby)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
+
 This is a plugin for [graphql-compose](https://github.com/nodkz/graphql-compose), which wraps GraphQL types with Relay specific things, like `Node` type and interface, `globalId`, `clientMutationId`.
 
 Live demo: [https://graphql-compose.herokuapp.com/](https://graphql-compose.herokuapp.com/)
