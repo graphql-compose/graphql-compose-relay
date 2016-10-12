@@ -25,7 +25,7 @@ export const UserType = new GraphQLObjectType({
 export const userTypeComposer = new TypeComposer(UserType);
 userTypeComposer.setRecordIdFn(obj => obj.id);
 
-export const findByIdResolver = new Resolver(userTypeComposer, {
+export const findByIdResolver = new Resolver({
   name: 'findById',
   kind: 'query',
   outputType: UserType,
@@ -54,8 +54,9 @@ export const findByIdResolver = new Resolver(userTypeComposer, {
     return Promise.resolve(null);
   },
 });
+userTypeComposer.setResolver('findById', findByIdResolver);
 
-export const createOneResolver = new Resolver(userTypeComposer, {
+export const createOneResolver = new Resolver({
   name: 'createOne',
   kind: 'mutation',
   outputType: new GraphQLObjectType({
@@ -86,8 +87,9 @@ export const createOneResolver = new Resolver(userTypeComposer, {
     });
   },
 });
+userTypeComposer.setResolver('createOne', createOneResolver);
 
-export const manyArgsWithInputResolver = new Resolver(userTypeComposer, {
+export const manyArgsWithInputResolver = new Resolver({
   name: 'manyArgsWithInput',
   kind: 'mutation',
   outputType: new GraphQLObjectType({
@@ -126,8 +128,9 @@ export const manyArgsWithInputResolver = new Resolver(userTypeComposer, {
     });
   },
 });
+userTypeComposer.setResolver('manyArgsWithInput', manyArgsWithInputResolver);
 
-export const manyArgsWithoutInputResolver = new Resolver(userTypeComposer, {
+export const manyArgsWithoutInputResolver = new Resolver({
   name: 'manyArgsWithoutInput',
   kind: 'mutation',
   outputType: new GraphQLObjectType({
@@ -155,3 +158,4 @@ export const manyArgsWithoutInputResolver = new Resolver(userTypeComposer, {
     });
   },
 });
+userTypeComposer.setResolver('manyArgsWithoutInput', manyArgsWithoutInputResolver);

@@ -5,11 +5,11 @@ import { GraphQLID, GraphQLNonNull } from 'graphql';
 import { getProjectionFromAST } from 'graphql-compose';
 import { fromGlobalId } from './globalId';
 import NodeInterface from './nodeInterface';
-import type { TypeFindByIdMap, GraphQLResolveInfo } from './definition.js';
+import type { TypeMapForNode, GraphQLResolveInfo } from './definition.js';
 
 
 // this fieldConfig must be set to RootQuery.node field
-export function getNodeFieldConfig(typeToFindByIdMap: TypeFindByIdMap) {
+export function getNodeFieldConfig(typeMapForNode: TypeMapForNode) {
   return {
     description: 'Fetches an object that has globally unique ID among all types',
     type: NodeInterface,
@@ -30,9 +30,13 @@ export function getNodeFieldConfig(typeToFindByIdMap: TypeFindByIdMap) {
       }
       const { type, id } = fromGlobalId(args.id);
 
-      const findById = typeToFindByIdMap[type];
-      if (findById && findById.resolve) {
-        const tc = findById.getTypeComposer();
+      if (!typeMapForNode[type]) {
+        return null;
+      }
+      const findById = typeMapForNode[type].resolver;
+      const tc = typeMapForNode[type].tc;
+
+      if (findById && findById.resolve && tc) {
         const graphqlType = tc.getType();
 
         // set `returnType` to `info` for proper work of `getProjectionFromAST`

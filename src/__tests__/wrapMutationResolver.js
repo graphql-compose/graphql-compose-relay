@@ -11,7 +11,7 @@ import { userTypeComposer } from '../__mocks__/userTypeComposer';
 import { toGlobalId } from '../globalId';
 
 
-describe('MutationMiddleware', () => {
+describe('wrapMutationResolver', () => {
   composeWithRelay(userTypeComposer);
   const fieldConfig = userTypeComposer.getResolver('createOne').getFieldConfig();
   const fieldConfigManyArgsWithInput

@@ -23,7 +23,7 @@ describe('composeWithRelay', () => {
       expect(userComposer).instanceof(TypeComposer);
     });
 
-    it('should throw error if get not TypeComposer', () => {
+    it('should throw error if got a not TypeComposer', () => {
       expect(() => composeWithRelay(123)).to.throw('should provide TypeComposer instance');
     });
 

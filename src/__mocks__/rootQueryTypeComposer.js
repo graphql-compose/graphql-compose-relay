@@ -4,7 +4,7 @@ import {
 import { TypeComposer } from 'graphql-compose';
 
 const RootQuery = new GraphQLObjectType({
-  name: 'RootQuery',
+  name: 'Query',
   fields: {
   },
 });

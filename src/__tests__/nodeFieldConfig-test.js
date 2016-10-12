@@ -3,14 +3,17 @@ import {
   GraphQLInterfaceType,
   GraphQLNonNull,
 } from 'graphql';
-import { findByIdResolver } from '../__mocks__/userTypeComposer';
+import { findByIdResolver, userTypeComposer } from '../__mocks__/userTypeComposer';
 import { toGlobalId } from '../globalId';
 import { getNodeFieldConfig } from '../nodeFieldConfig';
 
 
 describe('nodeFieldConfig', () => {
   const typeToFindByIdMap = {
-    User: findByIdResolver,
+    User: {
+      resolver: findByIdResolver,
+      tc: userTypeComposer,
+    }
   };
   const config = getNodeFieldConfig(typeToFindByIdMap);
 

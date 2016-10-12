@@ -19,6 +19,11 @@ import type {
 
 
 export type ObjectMap = { [optName: string]: mixed };
+export type WrapMutationResolverOpts = {
+  resolverName: string,
+  rootTypeName: string,
+  [optName: string]: mixed,
+};
 
 export type ResolverMWArgsFn = _ResolverMWArgsFn;
 export type ResolverMWArgs = _ResolverMWArgs;
@@ -34,7 +39,7 @@ export type GraphQLResolveInfo = _GraphQLResolveInfo;
 export type Resolver = _Resolver;
 export type ResolveParams = _ResolveParams;
 export type TypeComposer = _TypeComposer;
-export type TypeFindByIdMap = {[typeName: string]: Resolver};
+export type TypeMapForNode = {[typeName: string]: { resolver: Resolver, tc: TypeComposer } };
 
 
 // INTERNAL TYPES

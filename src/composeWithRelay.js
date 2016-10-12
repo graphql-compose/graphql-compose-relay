@@ -4,14 +4,14 @@
 import { GraphQLID, GraphQLNonNull } from 'graphql';
 import { TypeComposer } from 'graphql-compose';
 import NodeInterface from './nodeInterface';
-import MutationMiddleware from './mutationMiddleware';
+import wrapMutationResolver from './wrapMutationResolver';
 import { toGlobalId } from './globalId';
 import { getNodeFieldConfig } from './nodeFieldConfig';
 
 // all wrapped typeComposers with Relay, stored in this variable
 // for futher type resolving via NodeInterface.resolveType method
-export const typeComposerMap = {};
-export const nodeFieldConfig = getNodeFieldConfig(typeComposerMap);
+export const typeMapForNode = {};
+export const nodeFieldConfig = getNodeFieldConfig(typeMapForNode);
 
 export function composeWithRelay(
   typeComposer: TypeComposer
@@ -20,12 +20,12 @@ export function composeWithRelay(
     throw new Error('You should provide TypeComposer instance to composeWithRelay method');
   }
 
-  if (typeComposer.getTypeName() === 'RootQuery') {
+  if (typeComposer.getTypeName() === 'Query' || typeComposer.getTypeName() === 'RootQuery') {
     typeComposer.addField('node', nodeFieldConfig);
     return typeComposer;
   }
 
-  if (typeComposer.getTypeName() === 'RootMutation') {
+  if (typeComposer.getTypeName() === 'Mutation' || typeComposer.getTypeName() === 'RootMutation') {
     // just skip
     return typeComposer;
   }
@@ -40,7 +40,10 @@ export function composeWithRelay(
     throw new Error(`TypeComposer(${typeComposer.getTypeName()}) provided to composeWithRelay `
                   + 'should have findById resolver.');
   }
-  typeComposerMap[typeComposer.getTypeName()] = findById;
+  typeMapForNode[typeComposer.getTypeName()] = {
+    resolver: findById,
+    tc: typeComposer,
+  };
 
   typeComposer.addFields({
     id: {
@@ -55,9 +58,13 @@ export function composeWithRelay(
 
   typeComposer.addInterface(NodeInterface);
 
-  typeComposer.getResolvers().forEach(resolver => {
+  typeComposer.getResolvers().forEach((resolver, resolverName) => {
     if (resolver.kind === 'mutation') {
-      resolver.addMiddleware(new MutationMiddleware(typeComposer, resolver));
+      const wrappedResolver = wrapMutationResolver(resolver, {
+        resolverName,
+        rootTypeName: typeComposer.getTypeName(),
+      });
+      typeComposer.setResolver(resolverName, wrappedResolver);
     }
   });
 

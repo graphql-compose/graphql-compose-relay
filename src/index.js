@@ -6,6 +6,7 @@ import NodeInterface from './nodeInterface';
 
 export default composeWithRelay;
 export {
+  composeWithRelay,
   NodeInterface,
   typeComposerMap,
   nodeFieldConfig,
