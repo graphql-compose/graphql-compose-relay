@@ -21,7 +21,7 @@ export function composeWithRelay(
   }
 
   if (typeComposer.getTypeName() === 'Query' || typeComposer.getTypeName() === 'RootQuery') {
-    typeComposer.addField('node', nodeFieldConfig);
+    typeComposer.setField('node', nodeFieldConfig);
     return typeComposer;
   }
 

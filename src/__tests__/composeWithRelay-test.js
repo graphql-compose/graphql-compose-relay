@@ -61,7 +61,7 @@ describe('composeWithRelay', () => {
     });
 
     it('should resolve globalId in `user.id` field', async () => {
-      rootQueryTypeComposer.addField('user',
+      rootQueryTypeComposer.setField('user',
         userTypeComposer.getResolver('findById').getFieldConfig()
       );
       const schema = new GraphQLSchema({
@@ -79,7 +79,7 @@ describe('composeWithRelay', () => {
     });
 
     it('should resolve globalId in `node.id` field', async () => {
-      rootQueryTypeComposer.addField('user',
+      rootQueryTypeComposer.setField('user',
         userTypeComposer.getResolver('findById').getFieldConfig()
       );
       const schema = new GraphQLSchema({
@@ -100,7 +100,7 @@ describe('composeWithRelay', () => {
     });
 
     it('should passthru clientMutationId in mutations', async () => {
-      rootMutationComposer.addField('createUser',
+      rootMutationComposer.setField('createUser',
         userTypeComposer.getResolver('createOne').getFieldConfig()
       );
       const schema = new GraphQLSchema({

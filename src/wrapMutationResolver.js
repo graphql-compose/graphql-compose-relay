@@ -55,7 +55,7 @@ export default function wrapMutationResolver(
 
     // add `clientMutationId` to args.input field
     if (ITC && !ITC.hasField('clientMutationId')) {
-      ITC.addField('clientMutationId', {
+      ITC.setField('clientMutationId', {
         type: 'String',
         description: 'The client mutation ID used by clients like Relay to track the mutation. '
                    + 'If given, returned in the response payload of the mutation.',
@@ -102,14 +102,14 @@ export default function wrapMutationResolver(
 
     const outputTC = new TypeComposer(outputType);
     if (!outputTC.hasField('nodeId')) {
-      outputTC.addField('nodeId', {
+      outputTC.setField('nodeId', {
         type: 'ID',
         description: 'The globally unique ID among all types',
       });
     }
 
     if (!outputTC.hasField('clientMutationId')) {
-      outputTC.addField('clientMutationId', {
+      outputTC.setField('clientMutationId', {
         type: 'String',
         description: 'The client mutation ID used by clients like Relay to track the mutation. '
                    + 'If given, returned in the response payload of the mutation.',
