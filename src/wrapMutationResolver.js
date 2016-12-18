@@ -123,5 +123,5 @@ export default function wrapMutationResolver(
     prepareArgs(newResolver);
     prepareResolve(newResolver, prevResolver);
     prepareOutputType(newResolver, prevResolver);
-  }, 'RelayMutation');
+  }, { name: 'RelayMutation' });
 }
