@@ -7,16 +7,10 @@ import {
   GraphQLInputObjectType,
   GraphQLNonNull,
 } from 'graphql';
-import { ResolverMiddleware, TypeComposer, InputTypeComposer } from 'graphql-compose';
+import { TypeComposer, InputTypeComposer } from 'graphql-compose';
 import { toGlobalId } from './globalId';
 import type {
   Resolver,
-  ResolverMWArgsFn,
-  ResolverMWArgs,
-  ResolverMWResolveFn,
-  ResolverMWResolve,
-  ResolverMWOutputTypeFn,
-  ResolverMWOutputType,
   WrapMutationResolverOpts,
 } from './definition';
 
@@ -93,8 +87,8 @@ export default function wrapMutationResolver(
     });
   }
 
-  function prepareOutputType(newResolver, prevResolver) {
-    const outputType = prevResolver.getOutputType();
+  function prepareType(newResolver, prevResolver) {
+    const outputType = prevResolver.getType();
 
     if (!(outputType instanceof GraphQLObjectType)) {
       return;
@@ -116,12 +110,12 @@ export default function wrapMutationResolver(
       });
     }
 
-    newResolver.setOutputType(outputTC.getType());
+    newResolver.setType(outputTC.getType());
   }
 
   return resolver.wrap((newResolver, prevResolver) => {
     prepareArgs(newResolver);
     prepareResolve(newResolver, prevResolver);
-    prepareOutputType(newResolver, prevResolver);
+    prepareType(newResolver, prevResolver);
   }, { name: 'RelayMutation' });
 }

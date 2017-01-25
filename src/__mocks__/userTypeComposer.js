@@ -28,7 +28,7 @@ userTypeComposer.setRecordIdFn(obj => obj.id);
 export const findByIdResolver = new Resolver({
   name: 'findById',
   kind: 'query',
-  outputType: UserType,
+  type: UserType,
   args: {
     _id: {
       name: '_id',
@@ -59,7 +59,7 @@ userTypeComposer.setResolver('findById', findByIdResolver);
 export const createOneResolver = new Resolver({
   name: 'createOne',
   kind: 'mutation',
-  outputType: new GraphQLObjectType({
+  type: new GraphQLObjectType({
     name: 'UserPayload',
     fields: {
       record: {
@@ -92,7 +92,7 @@ userTypeComposer.setResolver('createOne', createOneResolver);
 export const manyArgsWithInputResolver = new Resolver({
   name: 'manyArgsWithInput',
   kind: 'mutation',
-  outputType: new GraphQLObjectType({
+  type: new GraphQLObjectType({
     name: 'UserPayload',
     fields: {
       record: {
@@ -133,7 +133,7 @@ userTypeComposer.setResolver('manyArgsWithInput', manyArgsWithInputResolver);
 export const manyArgsWithoutInputResolver = new Resolver({
   name: 'manyArgsWithoutInput',
   kind: 'mutation',
-  outputType: new GraphQLObjectType({
+  type: new GraphQLObjectType({
     name: 'UserPayload',
     fields: {
       record: {
