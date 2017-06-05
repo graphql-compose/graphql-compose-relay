@@ -1,12 +1,13 @@
 /* @flow */
 /* eslint-disable no-use-before-define */
 
-import { GraphQLID, GraphQLNonNull } from 'graphql';
-import { TypeComposer } from 'graphql-compose';
+import { TypeComposer, graphql } from 'graphql-compose';
 import NodeInterface from './nodeInterface';
 import wrapMutationResolver from './wrapMutationResolver';
 import { toGlobalId } from './globalId';
 import { getNodeFieldConfig } from './nodeFieldConfig';
+
+const { GraphQLID, GraphQLNonNull } = graphql;
 
 // all wrapped typeComposers with Relay, stored in this variable
 // for futher type resolving via NodeInterface.resolveType method

@@ -1,9 +1,12 @@
+/* @flow */
+
 import { expect } from 'chai';
-import { GraphQLString, GraphQLID, GraphQLNonNull, getNamedType } from 'graphql';
-import { TypeComposer, InputTypeComposer } from 'graphql-compose';
+import { TypeComposer, InputTypeComposer, graphql } from 'graphql-compose';
 import { composeWithRelay } from '../composeWithRelay';
 import { userTypeComposer } from '../__mocks__/userTypeComposer';
 import { toGlobalId } from '../globalId';
+
+const { GraphQLString, GraphQLID, GraphQLNonNull, getNamedType } = graphql;
 
 describe('wrapMutationResolver', () => {
   composeWithRelay(userTypeComposer);

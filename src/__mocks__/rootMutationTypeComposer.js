@@ -1,9 +1,8 @@
-import {
-  GraphQLObjectType,
-} from 'graphql';
-import { TypeComposer } from 'graphql-compose';
+/* @flow */
 
-const RootMutation = new GraphQLObjectType({
+import { TypeComposer, graphql } from 'graphql-compose';
+
+const RootMutation = new graphql.GraphQLObjectType({
   name: 'Mutation',
   fields: {},
 });

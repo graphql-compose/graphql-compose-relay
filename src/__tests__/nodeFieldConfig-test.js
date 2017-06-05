@@ -1,12 +1,12 @@
+/* @flow */
+
 import { expect } from 'chai';
-import {
-  GraphQLInterfaceType,
-  GraphQLNonNull,
-} from 'graphql';
+import { graphql } from 'graphql-compose';
 import { findByIdResolver, userTypeComposer } from '../__mocks__/userTypeComposer';
 import { toGlobalId } from '../globalId';
 import { getNodeFieldConfig } from '../nodeFieldConfig';
 
+const { GraphQLInterfaceType, GraphQLNonNull } = graphql;
 
 describe('nodeFieldConfig', () => {
   const typeToFindByIdMap = {

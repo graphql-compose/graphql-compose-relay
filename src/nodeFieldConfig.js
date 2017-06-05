@@ -1,11 +1,11 @@
 /* @flow */
 /* eslint-disable no-param-reassign, import/prefer-default-export */
-
-import { GraphQLID, GraphQLNonNull } from 'graphql';
-import { getProjectionFromAST } from 'graphql-compose';
+import { getProjectionFromAST, graphql } from 'graphql-compose';
 import { fromGlobalId } from './globalId';
 import NodeInterface from './nodeInterface';
 import type { TypeMapForNode, GraphQLResolveInfo } from './definition';
+
+const { GraphQLID, GraphQLNonNull } = graphql;
 
 // this fieldConfig must be set to RootQuery.node field
 export function getNodeFieldConfig(typeMapForNode: TypeMapForNode) {

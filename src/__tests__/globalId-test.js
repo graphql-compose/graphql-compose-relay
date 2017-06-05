@@ -1,3 +1,5 @@
+/* @flow */
+
 import { expect } from 'chai';
 import { base64, unbase64, toGlobalId, fromGlobalId } from '../globalId';
 

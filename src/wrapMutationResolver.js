@@ -1,10 +1,11 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import { GraphQLObjectType, getNamedType, GraphQLInputObjectType, GraphQLNonNull } from 'graphql';
-import { TypeComposer, InputTypeComposer } from 'graphql-compose';
+import { TypeComposer, InputTypeComposer, graphql } from 'graphql-compose';
 import { toGlobalId } from './globalId';
 import type { Resolver, WrapMutationResolverOpts } from './definition';
+
+const { GraphQLObjectType, getNamedType, GraphQLInputObjectType, GraphQLNonNull } = graphql;
 
 function upperFirst(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);

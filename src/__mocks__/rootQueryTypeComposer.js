@@ -1,9 +1,8 @@
-import {
-  GraphQLObjectType,
-} from 'graphql';
-import { TypeComposer } from 'graphql-compose';
+/* @flow */
 
-const RootQuery = new GraphQLObjectType({
+import { TypeComposer, graphql } from 'graphql-compose';
+
+const RootQuery = new graphql.GraphQLObjectType({
   name: 'Query',
   fields: {},
 });

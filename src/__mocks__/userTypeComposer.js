@@ -1,11 +1,14 @@
-import {
+/* @flow */
+
+import { TypeComposer, Resolver, graphql } from 'graphql-compose';
+
+const {
   GraphQLString,
   GraphQLObjectType,
   GraphQLInputObjectType,
   GraphQLNonNull,
   GraphQLInt,
-} from 'graphql';
-import { TypeComposer, Resolver } from 'graphql-compose';
+} = graphql;
 
 export const UserType = new GraphQLObjectType({
   name: 'User',
