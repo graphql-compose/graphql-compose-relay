@@ -1,23 +1,19 @@
 import { expect } from 'chai';
-import {
-  GraphQLString,
-  GraphQLID,
-  GraphQLNonNull,
-  getNamedType,
-} from 'graphql';
+import { GraphQLString, GraphQLID, GraphQLNonNull, getNamedType } from 'graphql';
 import { TypeComposer, InputTypeComposer } from 'graphql-compose';
 import { composeWithRelay } from '../composeWithRelay';
 import { userTypeComposer } from '../__mocks__/userTypeComposer';
 import { toGlobalId } from '../globalId';
 
-
 describe('wrapMutationResolver', () => {
   composeWithRelay(userTypeComposer);
   const fieldConfig = userTypeComposer.getResolver('createOne').getFieldConfig();
-  const fieldConfigManyArgsWithInput
-    = userTypeComposer.getResolver('manyArgsWithInput').getFieldConfig();
-  const fieldConfigManyArgsWithoutInput
-    = userTypeComposer.getResolver('manyArgsWithoutInput').getFieldConfig();
+  const fieldConfigManyArgsWithInput = userTypeComposer
+    .getResolver('manyArgsWithInput')
+    .getFieldConfig();
+  const fieldConfigManyArgsWithoutInput = userTypeComposer
+    .getResolver('manyArgsWithoutInput')
+    .getFieldConfig();
 
   describe('args', () => {
     it('should add `clientMutationId` field to args.input', () => {
@@ -26,12 +22,12 @@ describe('wrapMutationResolver', () => {
       expect(itc.getFieldType('clientMutationId')).equal(GraphQLString);
     });
 
-
     it('should create required args.input! if not exists', () => {
       expect(fieldConfigManyArgsWithoutInput.args).property('input').to.be.ok;
 
-      expect(fieldConfigManyArgsWithoutInput.args)
-        .nested.property('input.type').instanceof(GraphQLNonNull);
+      expect(fieldConfigManyArgsWithoutInput.args).nested
+        .property('input.type')
+        .instanceof(GraphQLNonNull);
     });
 
     it('should create args.input if not exists and move all args into it', () => {
@@ -71,18 +67,12 @@ describe('wrapMutationResolver', () => {
 
   describe('resolve', () => {
     it('should passthru `clientMutationId`', async () => {
-      const result = await fieldConfig.resolve(
-        {},
-        { input: { clientMutationId: '333' } }
-      );
+      const result = await fieldConfig.resolve({}, { input: { clientMutationId: '333' } });
       expect(result).property('clientMutationId').equal('333');
     });
 
     it('should return `nodeId` with globalId', async () => {
-      const result = await fieldConfig.resolve(
-        {},
-        { input: { id: 'newRecord' } }
-      );
+      const result = await fieldConfig.resolve({}, { input: { id: 'newRecord' } });
       expect(result).property('nodeId').equal(toGlobalId('User', 'newRecord'));
     });
   });

@@ -36,7 +36,7 @@ describe('composeWithRelay', () => {
     it('should thow error if typeComposer does not have findById resolver', () => {
       const tc = userTypeComposer.clone('AnotherUserType');
       tc.removeResolver('findById');
-      expect(() => composeWithRelay(tc)).to.throw('does not have resolver with name \'findById\'');
+      expect(() => composeWithRelay(tc)).to.throw("does not have resolver with name 'findById'");
     });
   });
 
@@ -61,7 +61,8 @@ describe('composeWithRelay', () => {
     });
 
     it('should resolve globalId in `user.id` field', async () => {
-      rootQueryTypeComposer.setField('user',
+      rootQueryTypeComposer.setField(
+        'user',
         userTypeComposer.getResolver('findById').getFieldConfig()
       );
       const schema = new GraphQLSchema({
@@ -73,13 +74,14 @@ describe('composeWithRelay', () => {
           name
         }
       }`;
-      const result = await graphql(schema, query);
+      const result = await graphql.graphql(schema, query);
       expect(result).nested.property('data.user.id').equal(toGlobalId('User', 1));
       expect(result).nested.property('data.user.name').equal('Pavel');
     });
 
     it('should resolve globalId in `node.id` field', async () => {
-      rootQueryTypeComposer.setField('user',
+      rootQueryTypeComposer.setField(
+        'user',
         userTypeComposer.getResolver('findById').getFieldConfig()
       );
       const schema = new GraphQLSchema({
@@ -94,13 +96,14 @@ describe('composeWithRelay', () => {
         id
         name
       }`;
-      const result = await graphql(schema, query);
+      const result = await graphql.graphql(schema, query);
       expect(result).nested.property('data.node.id').equal(toGlobalId('User', 1));
       expect(result).nested.property('data.node.name').equal('Pavel');
     });
 
     it('should passthru clientMutationId in mutations', async () => {
-      rootMutationComposer.setField('createUser',
+      rootMutationComposer.setField(
+        'createUser',
         userTypeComposer.getResolver('createOne').getFieldConfig()
       );
       const schema = new GraphQLSchema({
@@ -115,11 +118,9 @@ describe('composeWithRelay', () => {
           clientMutationId
         }
       }`;
-      const result = await graphql(schema, query);
-      expect(result).nested.property('data.createUser.record.name')
-        .equal('Ok');
-      expect(result).nested.property('data.createUser.clientMutationId')
-        .equal('123');
+      const result = await graphql.graphql(schema, query);
+      expect(result).nested.property('data.createUser.record.name').equal('Ok');
+      expect(result).nested.property('data.createUser.clientMutationId').equal('123');
     });
   });
 });

@@ -13,9 +13,7 @@ import { getNodeFieldConfig } from './nodeFieldConfig';
 export const typeMapForNode = {};
 export const nodeFieldConfig = getNodeFieldConfig(typeMapForNode);
 
-export function composeWithRelay(
-  typeComposer: TypeComposer
-): TypeComposer {
+export function composeWithRelay(typeComposer: TypeComposer): TypeComposer {
   if (!(typeComposer instanceof TypeComposer)) {
     throw new Error('You should provide TypeComposer instance to composeWithRelay method');
   }
@@ -31,14 +29,18 @@ export function composeWithRelay(
   }
 
   if (!typeComposer.hasRecordIdFn()) {
-    throw new Error(`TypeComposer(${typeComposer.getTypeName()}) should have recordIdFn. `
-                  + 'This function returns ID from provided object.');
+    throw new Error(
+      `TypeComposer(${typeComposer.getTypeName()}) should have recordIdFn. ` +
+        'This function returns ID from provided object.'
+    );
   }
 
   const findById = typeComposer.getResolver('findById');
   if (!findById) {
-    throw new Error(`TypeComposer(${typeComposer.getTypeName()}) provided to composeWithRelay `
-                  + 'should have findById resolver.');
+    throw new Error(
+      `TypeComposer(${typeComposer.getTypeName()}) provided to composeWithRelay ` +
+        'should have findById resolver.'
+    );
   }
   typeMapForNode[typeComposer.getTypeName()] = {
     resolver: findById,
@@ -49,10 +51,7 @@ export function composeWithRelay(
     id: {
       type: new GraphQLNonNull(GraphQLID),
       description: 'The globally unique ID among all types',
-      resolve: (source) => toGlobalId(
-        typeComposer.getTypeName(),
-        typeComposer.getRecordId(source)
-      ),
+      resolve: source => toGlobalId(typeComposer.getTypeName(), typeComposer.getRecordId(source)),
     },
   });
 

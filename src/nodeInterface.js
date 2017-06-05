@@ -1,11 +1,6 @@
 /* @flow */
 
-import {
-  GraphQLID,
-  GraphQLNonNull,
-  GraphQLInterfaceType,
-} from 'graphql';
-
+import { GraphQLID, GraphQLNonNull, GraphQLInterfaceType } from 'graphql';
 
 const NodeInterface = new GraphQLInterfaceType({
   name: 'Node',
@@ -16,7 +11,7 @@ const NodeInterface = new GraphQLInterfaceType({
       description: 'The globally unique ID among all types.',
     },
   }),
-  resolveType: (payload) => {
+  resolveType: payload => {
     // `payload.__nodeType` was added to payload via nodeFieldConfig.resolve
     return payload.__nodeType ? payload.__nodeType : null;
   },

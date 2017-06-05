@@ -35,7 +35,7 @@ export const findByIdResolver = new Resolver({
       type: new GraphQLNonNull(GraphQLInt),
     },
   },
-  resolve: (resolveParams) => {
+  resolve: resolveParams => {
     const args = resolveParams.args || {};
     if (args._id.toString() === '1') {
       return Promise.resolve({
@@ -80,7 +80,7 @@ export const createOneResolver = new Resolver({
       }),
     },
   },
-  resolve: (resolveParams) => {
+  resolve: resolveParams => {
     return Promise.resolve({
       recordId: resolveParams.args.input.id,
       record: (resolveParams.args && resolveParams.args.input) || {},
@@ -121,7 +121,7 @@ export const manyArgsWithInputResolver = new Resolver({
       type: GraphQLInt,
     },
   },
-  resolve: (resolveParams) => {
+  resolve: resolveParams => {
     return Promise.resolve({
       recordId: resolveParams.args.input.id,
       record: (resolveParams.args && resolveParams.args.input) || {},
@@ -151,7 +151,7 @@ export const manyArgsWithoutInputResolver = new Resolver({
       type: GraphQLInt,
     },
   },
-  resolve: (resolveParams) => {
+  resolve: resolveParams => {
     return Promise.resolve({
       recordId: resolveParams.args.input.id,
       record: (resolveParams.args && resolveParams.args.input) || {},

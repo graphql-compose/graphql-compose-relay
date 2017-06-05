@@ -13,7 +13,7 @@ describe('nodeFieldConfig', () => {
     User: {
       resolver: findByIdResolver,
       tc: userTypeComposer,
-    }
+    },
   };
   const config = getNodeFieldConfig(typeToFindByIdMap);
 
@@ -36,15 +36,11 @@ describe('nodeFieldConfig', () => {
   });
 
   it('should return null if findById not defined for type', () => {
-    expect(
-      config.resolve({}, { id: toGlobalId('UnexistedType', 1) })
-    ).to.be.null;
+    expect(config.resolve({}, { id: toGlobalId('UnexistedType', 1) })).to.be.null;
   });
 
   it('should return Promise if type exists, but id not exist', () => {
-    expect(
-      config.resolve({}, { id: toGlobalId('User', 666) })
-    ).instanceof(Promise);
+    expect(config.resolve({}, { id: toGlobalId('User', 666) })).instanceof(Promise);
   });
 
   it('should return Promise with user data', async () => {

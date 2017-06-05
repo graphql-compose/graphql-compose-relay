@@ -12,11 +12,7 @@ import type {
   GraphQLResolveInfo as _GraphQLResolveInfo,
 } from 'graphql-compose/lib/definition';
 
-import type {
-  TypeComposer as _TypeComposer,
-  Resolver as _Resolver,
-} from 'graphql-compose';
-
+import type { TypeComposer as _TypeComposer, Resolver as _Resolver } from 'graphql-compose';
 
 export type ObjectMap = { [optName: string]: mixed };
 export type WrapMutationResolverOpts = {
@@ -39,8 +35,9 @@ export type GraphQLResolveInfo = _GraphQLResolveInfo;
 export type Resolver<TSource, TContext> = _Resolver<TSource, TContext>;
 export type ResolveParams<TSource, TContext> = _ResolveParams<TSource, TContext>;
 export type TypeComposer = _TypeComposer;
-export type TypeMapForNode = {[typeName: string]: { resolver: Resolver<*, *>, tc: TypeComposer } };
-
+export type TypeMapForNode = {
+  [typeName: string]: { resolver: Resolver<*, *>, tc: TypeComposer },
+};
 
 // INTERNAL TYPES
 export type Base64String = string;

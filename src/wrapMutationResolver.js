@@ -12,7 +12,7 @@ function upperFirst(str) {
 
 export default function wrapMutationResolver<TSource, TContext>(
   resolver: Resolver<TSource, TContext>,
-  opts: WrapMutationResolverOpts,
+  opts: WrapMutationResolverOpts
 ): Resolver<TSource, TContext> {
   const { resolverName, rootTypeName } = opts;
 
@@ -52,7 +52,7 @@ export default function wrapMutationResolver<TSource, TContext>(
   }
 
   function prepareResolve(newResolver, prevResolver) {
-    newResolver.setResolve((resolveParams) => {
+    newResolver.setResolve(resolveParams => {
       let clientMutationId;
 
       if (resolveParams && resolveParams.args) {
@@ -66,7 +66,7 @@ export default function wrapMutationResolver<TSource, TContext>(
         resolveParams.args = resolveParams.args.input;
       }
 
-      return prevResolver.resolve(resolveParams).then((res) => {
+      return prevResolver.resolve(resolveParams).then(res => {
         res.nodeId = toGlobalId(rootTypeName, res.recordId);
         if (clientMutationId) {
           res.clientMutationId = clientMutationId;
@@ -110,6 +110,6 @@ export default function wrapMutationResolver<TSource, TContext>(
       prepareType(newResolver, prevResolver);
       return newResolver;
     },
-    { name: 'RelayMutation' },
+    { name: 'RelayMutation' }
   );
 }

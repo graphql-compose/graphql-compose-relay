@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/nodkz/graphql-compose-relay",
   "peerDependencies": {
-    "graphql": ">=0.7.1 || >=0.8.0 || >=0.9.0",
     "graphql-compose": ">=1.19.3"
   },
   "devDependencies": {
@@ -44,13 +43,16 @@
     "cz-conventional-changelog": "^2.0.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-config-prettier": "^2.1.1",
     "eslint-plugin-flowtype": "^2.34.0",
     "eslint-plugin-import": "^2.3.0",
+    "eslint-plugin-prettier": "^2.1.1",
     "flow-bin": "^0.47.0",
     "graphql": "^0.10.1",
     "graphql-compose": "^1.19.3",
     "mocha": "^3.4.2",
     "nyc": "^11.0.2",
+    "prettier": "^1.4.2",
     "rimraf": "^2.6.1",
     "sane": "^1.7.0",
     "semantic-release": "^6.3.6"
@@ -84,8 +86,8 @@
     "lint": "eslint src test *.js",
     "test": "babel-node ./node_modules/.bin/_mocha --compilers js:babel-core/register --reporter dot --require ./resources/mocha-bootload src/**/__tests__/**/*-test.js",
     "watch": "babel-node ./resources/watch.js",
-    "link": "yarn build && yarn link graphql && yarn link graphql-compose && yarn link",
-    "unlink": "yarn unlink graphql && yarn unlink graphql-compose && yarn add graphql graphql-compose",
+    "link": "yarn build && yarn link graphql-compose && yarn link",
+    "unlink": "yarn unlink graphql-compose && graphql-compose",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   }
 }

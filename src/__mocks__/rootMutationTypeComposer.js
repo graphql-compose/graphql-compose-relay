@@ -5,8 +5,7 @@ import { TypeComposer } from 'graphql-compose';
 
 const RootMutation = new GraphQLObjectType({
   name: 'Mutation',
-  fields: {
-  },
+  fields: {},
 });
 
 export const rootMutationTypeComposer = new TypeComposer(RootMutation);

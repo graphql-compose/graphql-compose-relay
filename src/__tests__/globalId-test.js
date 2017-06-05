@@ -1,11 +1,5 @@
 import { expect } from 'chai';
-import {
-  base64,
-  unbase64,
-  toGlobalId,
-  fromGlobalId,
-} from '../globalId';
-
+import { base64, unbase64, toGlobalId, fromGlobalId } from '../globalId';
 
 describe('globalId', () => {
   it('should have correct method base64()', () => {
@@ -24,8 +18,13 @@ describe('globalId', () => {
   });
 
   it('should have correct method fromGlobalId()', () => {
-    expect(fromGlobalId('VXNlcjo3ODk=')).to.deep.equal({ type: 'User', id: '789' });
-    expect(fromGlobalId('QXJ0aWNsZToyMg=='))
-      .to.deep.equal({ type: 'Article', id: '22' });
+    expect(fromGlobalId('VXNlcjo3ODk=')).to.deep.equal({
+      type: 'User',
+      id: '789',
+    });
+    expect(fromGlobalId('QXJ0aWNsZToyMg==')).to.deep.equal({
+      type: 'Article',
+      id: '22',
+    });
   });
 });

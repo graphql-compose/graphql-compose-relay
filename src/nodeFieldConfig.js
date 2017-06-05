@@ -22,7 +22,7 @@ export function getNodeFieldConfig(typeMapForNode: TypeMapForNode) {
       source: mixed,
       args: { [argName: string]: mixed },
       context: mixed,
-      info: GraphQLResolveInfo,
+      info: GraphQLResolveInfo
     ) => {
       if (!args.id || !(typeof args.id === 'string')) {
         return null;
@@ -58,7 +58,7 @@ export function getNodeFieldConfig(typeMapForNode: TypeMapForNode) {
             info,
             projection,
           })
-          .then((res) => {
+          .then(res => {
             if (!res) return res;
             res.__nodeType = graphqlType;
             return res;
