@@ -36,7 +36,7 @@ describe('composeWithRelay', () => {
     it('should thow error if typeComposer does not have findById resolver', () => {
       const tc = userTypeComposer.clone('AnotherUserType');
       tc.removeResolver('findById');
-      expect(() => composeWithRelay(tc)).to.throw('should have findById resolver');
+      expect(() => composeWithRelay(tc)).to.throw('does not have resolver with name \'findById\'');
     });
   });
 
@@ -45,7 +45,7 @@ describe('composeWithRelay', () => {
       const nodeField = rootQueryComposer.getField('node');
       expect(nodeField).to.be.ok;
       expect(nodeField).property('type').instanceof(GraphQLInterfaceType);
-      expect(nodeField).deep.property('type.name').to.equal('Node');
+      expect(nodeField).nested.property('type.name').to.equal('Node');
     });
   });
 
@@ -74,8 +74,8 @@ describe('composeWithRelay', () => {
         }
       }`;
       const result = await graphql(schema, query);
-      expect(result).deep.property('data.user.id').equal(toGlobalId('User', 1));
-      expect(result).deep.property('data.user.name').equal('Pavel');
+      expect(result).nested.property('data.user.id').equal(toGlobalId('User', 1));
+      expect(result).nested.property('data.user.name').equal('Pavel');
     });
 
     it('should resolve globalId in `node.id` field', async () => {
@@ -95,8 +95,8 @@ describe('composeWithRelay', () => {
         name
       }`;
       const result = await graphql(schema, query);
-      expect(result).deep.property('data.node.id').equal(toGlobalId('User', 1));
-      expect(result).deep.property('data.node.name').equal('Pavel');
+      expect(result).nested.property('data.node.id').equal(toGlobalId('User', 1));
+      expect(result).nested.property('data.node.name').equal('Pavel');
     });
 
     it('should passthru clientMutationId in mutations', async () => {
@@ -116,9 +116,9 @@ describe('composeWithRelay', () => {
         }
       }`;
       const result = await graphql(schema, query);
-      expect(result).deep.property('data.createUser.record.name')
+      expect(result).nested.property('data.createUser.record.name')
         .equal('Ok');
-      expect(result).deep.property('data.createUser.clientMutationId')
+      expect(result).nested.property('data.createUser.clientMutationId')
         .equal('123');
     });
   });

@@ -20,11 +20,11 @@ describe('nodeFieldConfig', () => {
   it('should have type GraphQLInterfaceType', () => {
     expect(config).to.be.ok;
     expect(config).property('type').instanceof(GraphQLInterfaceType);
-    expect(config).deep.property('type.name').to.equal('Node');
+    expect(config).nested.property('type.name').to.equal('Node');
   });
 
   it('should have args with id', () => {
-    expect(config).deep.property('args.id.type').instanceof(GraphQLNonNull);
+    expect(config).nested.property('args.id.type').instanceof(GraphQLNonNull);
   });
 
   it('should have resolve function', () => {

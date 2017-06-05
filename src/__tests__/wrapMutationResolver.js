@@ -31,7 +31,7 @@ describe('wrapMutationResolver', () => {
       expect(fieldConfigManyArgsWithoutInput.args).property('input').to.be.ok;
 
       expect(fieldConfigManyArgsWithoutInput.args)
-        .deep.property('input.type').instanceof(GraphQLNonNull);
+        .nested.property('input.type').instanceof(GraphQLNonNull);
     });
 
     it('should create args.input if not exists and move all args into it', () => {
