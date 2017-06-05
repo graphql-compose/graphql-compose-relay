@@ -1,27 +1,19 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import {
-  GraphQLObjectType,
-  getNamedType,
-  GraphQLInputObjectType,
-  GraphQLNonNull,
-} from 'graphql';
+import { GraphQLObjectType, getNamedType, GraphQLInputObjectType, GraphQLNonNull } from 'graphql';
 import { TypeComposer, InputTypeComposer } from 'graphql-compose';
 import { toGlobalId } from './globalId';
-import type {
-  Resolver,
-  WrapMutationResolverOpts,
-} from './definition';
+import type { Resolver, WrapMutationResolverOpts } from './definition';
 
 function upperFirst(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export default function wrapMutationResolver(
-  resolver: Resolver,
-  opts: WrapMutationResolverOpts = {}
-): Resolver {
+export default function wrapMutationResolver<TSource, TContext>(
+  resolver: Resolver<TSource, TContext>,
+  opts: WrapMutationResolverOpts,
+): Resolver<TSource, TContext> {
   const { resolverName, rootTypeName } = opts;
 
   function prepareArgs(newResolver) {
@@ -44,6 +36,7 @@ export default function wrapMutationResolver(
           type: new GraphQLNonNull(ITC.getType()),
         },
       });
+      // $FlowFixMe
       newResolver._relayIsArgsWrapped = true;
     }
 
@@ -51,8 +44,9 @@ export default function wrapMutationResolver(
     if (ITC && !ITC.hasField('clientMutationId')) {
       ITC.setField('clientMutationId', {
         type: 'String',
-        description: 'The client mutation ID used by clients like Relay to track the mutation. '
-                   + 'If given, returned in the response payload of the mutation.',
+        description:
+          'The client mutation ID used by clients like Relay to track the mutation. ' +
+            'If given, returned in the response payload of the mutation.',
       });
     }
   }
@@ -69,21 +63,16 @@ export default function wrapMutationResolver(
       }
 
       if (newResolver._relayIsArgsWrapped) {
-        // $FlowFixMe
         resolveParams.args = resolveParams.args.input;
       }
 
-      return prevResolver.resolve(resolveParams)
-        .then(res => {
-          res.nodeId = toGlobalId(
-            rootTypeName,
-            res.recordId
-          );
-          if (clientMutationId) {
-            res.clientMutationId = clientMutationId;
-          }
-          return res;
-        });
+      return prevResolver.resolve(resolveParams).then((res) => {
+        res.nodeId = toGlobalId(rootTypeName, res.recordId);
+        if (clientMutationId) {
+          res.clientMutationId = clientMutationId;
+        }
+        return res;
+      });
     });
   }
 
@@ -105,17 +94,22 @@ export default function wrapMutationResolver(
     if (!outputTC.hasField('clientMutationId')) {
       outputTC.setField('clientMutationId', {
         type: 'String',
-        description: 'The client mutation ID used by clients like Relay to track the mutation. '
-                   + 'If given, returned in the response payload of the mutation.',
+        description:
+          'The client mutation ID used by clients like Relay to track the mutation. ' +
+            'If given, returned in the response payload of the mutation.',
       });
     }
 
     newResolver.setType(outputTC.getType());
   }
 
-  return resolver.wrap((newResolver, prevResolver) => {
-    prepareArgs(newResolver);
-    prepareResolve(newResolver, prevResolver);
-    prepareType(newResolver, prevResolver);
-  }, { name: 'RelayMutation' });
+  return resolver.wrap(
+    (newResolver, prevResolver) => {
+      prepareArgs(newResolver);
+      prepareResolve(newResolver, prevResolver);
+      prepareType(newResolver, prevResolver);
+      return newResolver;
+    },
+    { name: 'RelayMutation' },
+  );
 }

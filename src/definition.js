@@ -10,7 +10,7 @@ import type {
   ResolverMWOutputTypeFn as _ResolverMWOutputTypeFn,
   ResolverMWOutputType as _ResolverMWOutputType,
   GraphQLResolveInfo as _GraphQLResolveInfo,
-} from 'graphql-compose/lib/definition.js';
+} from 'graphql-compose/lib/definition';
 
 import type {
   TypeComposer as _TypeComposer,
@@ -28,18 +28,18 @@ export type WrapMutationResolverOpts = {
 export type ResolverMWArgsFn = _ResolverMWArgsFn;
 export type ResolverMWArgs = _ResolverMWArgs;
 
-export type ResolverMWResolveFn = _ResolverMWResolveFn;
-export type ResolverMWResolve = _ResolverMWResolve;
+export type ResolverMWResolveFn<TSource, TContext> = _ResolverMWResolveFn<TSource, TContext>;
+export type ResolverMWResolve<TSource, TContext> = _ResolverMWResolve<TSource, TContext>;
 
 export type ResolverMWOutputTypeFn = _ResolverMWOutputTypeFn;
 export type ResolverMWOutputType = _ResolverMWOutputType;
 
 export type GraphQLResolveInfo = _GraphQLResolveInfo;
 
-export type Resolver = _Resolver;
-export type ResolveParams = _ResolveParams;
+export type Resolver<TSource, TContext> = _Resolver<TSource, TContext>;
+export type ResolveParams<TSource, TContext> = _ResolveParams<TSource, TContext>;
 export type TypeComposer = _TypeComposer;
-export type TypeMapForNode = {[typeName: string]: { resolver: Resolver, tc: TypeComposer } };
+export type TypeMapForNode = {[typeName: string]: { resolver: Resolver<*, *>, tc: TypeComposer } };
 
 
 // INTERNAL TYPES

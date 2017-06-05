@@ -5,8 +5,7 @@ import { GraphQLID, GraphQLNonNull } from 'graphql';
 import { getProjectionFromAST } from 'graphql-compose';
 import { fromGlobalId } from './globalId';
 import NodeInterface from './nodeInterface';
-import type { TypeMapForNode, GraphQLResolveInfo } from './definition.js';
-
+import type { TypeMapForNode, GraphQLResolveInfo } from './definition';
 
 // this fieldConfig must be set to RootQuery.node field
 export function getNodeFieldConfig(typeMapForNode: TypeMapForNode) {
@@ -21,9 +20,9 @@ export function getNodeFieldConfig(typeMapForNode: TypeMapForNode) {
     },
     resolve: (
       source: mixed,
-      args: {[argName: string]: mixed},
+      args: { [argName: string]: mixed },
       context: mixed,
-      info: GraphQLResolveInfo
+      info: GraphQLResolveInfo,
     ) => {
       if (!args.id || !(typeof args.id === 'string')) {
         return null;
@@ -51,17 +50,19 @@ export function getNodeFieldConfig(typeMapForNode: TypeMapForNode) {
 
         // suppose that first argument is argument with id field
         const idArgName = Object.keys(findById.args)[0];
-        return findById.resolve({
-          source,
-          args: { [idArgName]: id }, // eg. mongoose has _id fieldname, so should map
-          context,
-          info,
-          projection,
-        }).then(res => {
-          if (!res) return res;
-          res.__nodeType = graphqlType;
-          return res;
-        });
+        return findById
+          .resolve({
+            source,
+            args: { [idArgName]: id }, // eg. mongoose has _id fieldname, so should map
+            context,
+            info,
+            projection,
+          })
+          .then((res) => {
+            if (!res) return res;
+            res.__nodeType = graphqlType;
+            return res;
+          });
       }
 
       return null;

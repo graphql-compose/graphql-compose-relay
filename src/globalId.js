@@ -3,7 +3,7 @@
 import type {
   ResolvedGlobalId,
   Base64String,
-} from './definition.js';
+} from './definition';
 
 export function base64(i: string): Base64String {
   return ((new Buffer(i, 'ascii')).toString('base64'));

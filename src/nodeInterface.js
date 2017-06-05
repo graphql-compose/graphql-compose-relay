@@ -18,7 +18,6 @@ const NodeInterface = new GraphQLInterfaceType({
   }),
   resolveType: (payload) => {
     // `payload.__nodeType` was added to payload via nodeFieldConfig.resolve
-    // $FlowFixMe
     return payload.__nodeType ? payload.__nodeType : null;
   },
 });
