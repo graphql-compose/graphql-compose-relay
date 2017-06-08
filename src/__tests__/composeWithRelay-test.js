@@ -20,6 +20,7 @@ describe('composeWithRelay', () => {
     });
 
     it('should throw error if got a not TypeComposer', () => {
+      // $FlowFixMe
       expect(() => composeWithRelay(123)).toThrowError('should provide TypeComposer instance');
     });
 
@@ -41,7 +42,9 @@ describe('composeWithRelay', () => {
   describe('when pass RootQuery type composer', () => {
     it('should add `node` field to RootQuery', () => {
       const nodeField = rootQueryComposer.getField('node');
+      // $FlowFixMe
       expect(nodeField.type).toBeInstanceOf(GraphQLInterfaceType);
+      // $FlowFixMe
       expect(nodeField.type.name).toBe('Node');
     });
   });
@@ -49,11 +52,13 @@ describe('composeWithRelay', () => {
   describe('when pass User type composer (not RootQuery)', () => {
     it('should add or override id field', () => {
       const idField = userComposer.getField('id');
+      // $FlowFixMe
       expect(idField.description).toContain('globally unique ID');
     });
 
     it('should make id field NonNull', () => {
       const idField = userComposer.getField('id');
+      // $FlowFixMe
       expect(idField.type).toBeInstanceOf(GraphQLNonNull);
     });
 
@@ -72,7 +77,9 @@ describe('composeWithRelay', () => {
         }
       }`;
       const result = await graphql.graphql(schema, query);
+      // $FlowFixMe
       expect(result.data.user.id).toBe(toGlobalId('User', 1));
+      // $FlowFixMe
       expect(result.data.user.name).toBe('Pavel');
     });
 
@@ -94,7 +101,9 @@ describe('composeWithRelay', () => {
         name
       }`;
       const result = await graphql.graphql(schema, query);
+      // $FlowFixMe
       expect(result.data.node.id).toBe(toGlobalId('User', 1));
+      // $FlowFixMe
       expect(result.data.node.name).toBe('Pavel');
     });
 
@@ -116,7 +125,9 @@ describe('composeWithRelay', () => {
         }
       }`;
       const result = await graphql.graphql(schema, query);
+      // $FlowFixMe
       expect(result.data.createUser.record.name).toBe('Ok');
+      // $FlowFixMe
       expect(result.data.createUser.clientMutationId).toBe('123');
     });
   });

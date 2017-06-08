@@ -36,6 +36,7 @@ describe('wrapMutationResolver', () => {
       );
 
       const type = getNamedType(fieldConfigManyArgsWithoutInput.args.input.type);
+      // $FlowFixMe
       const itc = new InputTypeComposer(type);
       expect(itc.hasField('sort')).toBe(true);
       expect(itc.hasField('limit')).toBe(true);
@@ -48,6 +49,7 @@ describe('wrapMutationResolver', () => {
       );
 
       const type = getNamedType(fieldConfigManyArgsWithInput.args.input.type);
+      // $FlowFixMe
       const itc = new InputTypeComposer(type);
       expect(itc.hasField('sort')).toBe(false);
       expect(itc.hasField('limit')).toBe(false);

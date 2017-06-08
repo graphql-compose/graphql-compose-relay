@@ -33,19 +33,36 @@ describe('nodeFieldConfig', () => {
   });
 
   it('should return null if args.id not defined', () => {
-    expect(config.resolve({}, {})).toBeNull();
+    const source = {};
+    const args = {};
+    const context = {};
+    const info = ({}: any);
+    expect(config.resolve(source, args, context, info)).toBeNull();
   });
 
   it('should return null if findById not defined for type', () => {
-    expect(config.resolve({}, { id: toGlobalId('UnexistedType', 1) })).toBeNull();
+    const source = {};
+    const args = { id: toGlobalId('UnexistedType', 1) };
+    const context = {};
+    const info = ({}: any);
+    expect(config.resolve(source, args, context, info)).toBeNull();
   });
 
   it('should return Promise if type exists, but id not exist', () => {
-    expect(config.resolve({}, { id: toGlobalId('User', 666) })).toBeInstanceOf(Promise);
+    const source = {};
+    const args = { id: toGlobalId('User', 666) };
+    const context = {};
+    const info = ({}: any);
+    expect(config.resolve(source, args, context, info)).toBeInstanceOf(Promise);
   });
 
   it('should return Promise with user data', async () => {
-    const res = await config.resolve({}, { id: toGlobalId('User', 1) });
+    const source = {};
+    const args = { id: toGlobalId('User', 1) };
+    const context = {};
+    const info = ({}: any);
+    const res = await config.resolve(source, args, context, info);
+    // $FlowFixMe
     expect(res.name).toBe('Pavel');
   });
 });

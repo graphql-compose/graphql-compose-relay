@@ -1,6 +1,4 @@
 [ignore]
-.*/__tests__/.*
-.*/__mocks__/.*
 .*/coverage/.*
 .*/resources/.*
 <PROJECT_ROOT>/lib/.*
@@ -35,7 +33,6 @@
 .*/node_modules/travis.*
 .*/node_modules/uglify.*
 .*/node_modules/yargs.*
-
 
 [include]
 
