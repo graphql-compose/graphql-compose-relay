@@ -32,9 +32,6 @@
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.5.2",
-    "chai": "^4.0.1",
-    "chai-as-promised": "^6.0.0",
-    "chai-spies": "0.7.1",
     "cz-conventional-changelog": "^2.0.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "^11.2.0",
@@ -45,11 +42,9 @@
     "flow-bin": "^0.47.0",
     "graphql": "^0.10.1",
     "graphql-compose": "^1.20.4",
-    "mocha": "^3.4.2",
-    "nyc": "^11.0.2",
+    "jest": "^20.0.4",
     "prettier": "^1.4.4",
     "rimraf": "^2.6.1",
-    "sane": "^1.7.0",
     "semantic-release": "^6.3.6"
   },
   "dependencies": {
@@ -60,16 +55,23 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ]
+  },
   "scripts": {
     "build": "npm run build-cjs && npm run build-flow",
     "build-cjs": "rimraf lib && babel src --ignore __tests__,__mocks__ -d lib",
     "build-flow": "find ./src -name '*.js' -not -path '*/__*' | while read filepath; do cp $filepath `echo $filepath | sed 's/\\/src\\//\\/lib\\//g'`.flow; done",
-    "coverage": "nyc npm run test",
+    "coverage": "jest --coverage",
     "lint": "eslint src test *.js",
-    "test": "babel-node ./node_modules/.bin/_mocha --compilers js:babel-core/register --reporter dot --require ./resources/mocha-bootload src/**/__tests__/**/*-test.js",
-    "watch": "babel-node ./resources/watch.js",
+    "test": "jest",
+    "watch": "jest --watch",
+    "flow": "./node_modules/.bin/flow stop && ./node_modules/.bin/flow",
+    "all": "npm run test && npm run lint && npm run flow",
     "link": "yarn build && yarn link graphql-compose && yarn link",
-    "unlink": "yarn unlink graphql-compose && graphql-compose",
+    "unlink": "yarn unlink graphql-compose && yarn add graphql-compose",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   }
 }
