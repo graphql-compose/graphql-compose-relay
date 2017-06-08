@@ -29,7 +29,12 @@
     "no-unused-expressions": 0,
   },
   "env": {
-    "mocha": true
+    "jasmine": true,
+    "jest": true
+  },
+  "globals": {
+    "Class": true,
+    "$Shape": true,
   },
   "plugins": [
     "flowtype",

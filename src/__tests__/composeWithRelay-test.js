@@ -1,6 +1,5 @@
 /* @flow */
 
-import { expect } from 'chai';
 import { TypeComposer, graphql } from 'graphql-compose';
 import { composeWithRelay } from '../composeWithRelay';
 import { userTypeComposer } from '../__mocks__/userTypeComposer';
@@ -17,44 +16,45 @@ describe('composeWithRelay', () => {
 
   describe('basic checks', () => {
     it('should return TypeComposer', () => {
-      expect(userComposer).instanceof(TypeComposer);
+      expect(userComposer).toBeInstanceOf(TypeComposer);
     });
 
     it('should throw error if got a not TypeComposer', () => {
-      expect(() => composeWithRelay(123)).to.throw('should provide TypeComposer instance');
+      expect(() => composeWithRelay(123)).toThrowError('should provide TypeComposer instance');
     });
 
     it('should throw error if TypeComposer without recordIdFn', () => {
       const tc = userTypeComposer.clone('AnotherUserType2');
       delete tc.gqType._gqcGetRecordIdFn;
-      expect(() => composeWithRelay(tc)).to.throw('should have recordIdFn');
+      expect(() => composeWithRelay(tc)).toThrowError('should have recordIdFn');
     });
 
     it('should thow error if typeComposer does not have findById resolver', () => {
       const tc = userTypeComposer.clone('AnotherUserType');
       tc.removeResolver('findById');
-      expect(() => composeWithRelay(tc)).to.throw("does not have resolver with name 'findById'");
+      expect(() => composeWithRelay(tc)).toThrowError(
+        "does not have resolver with name 'findById'"
+      );
     });
   });
 
   describe('when pass RootQuery type composer', () => {
     it('should add `node` field to RootQuery', () => {
       const nodeField = rootQueryComposer.getField('node');
-      expect(nodeField).to.be.ok;
-      expect(nodeField).property('type').instanceof(GraphQLInterfaceType);
-      expect(nodeField).nested.property('type.name').to.equal('Node');
+      expect(nodeField.type).toBeInstanceOf(GraphQLInterfaceType);
+      expect(nodeField.type.name).toBe('Node');
     });
   });
 
   describe('when pass User type composer (not RootQuery)', () => {
     it('should add or override id field', () => {
       const idField = userComposer.getField('id');
-      expect(idField.description).to.contain('globally unique ID');
+      expect(idField.description).toContain('globally unique ID');
     });
 
     it('should make id field NonNull', () => {
       const idField = userComposer.getField('id');
-      expect(idField.type).instanceof(GraphQLNonNull);
+      expect(idField.type).toBeInstanceOf(GraphQLNonNull);
     });
 
     it('should resolve globalId in `user.id` field', async () => {
@@ -72,8 +72,8 @@ describe('composeWithRelay', () => {
         }
       }`;
       const result = await graphql.graphql(schema, query);
-      expect(result).nested.property('data.user.id').equal(toGlobalId('User', 1));
-      expect(result).nested.property('data.user.name').equal('Pavel');
+      expect(result.data.user.id).toBe(toGlobalId('User', 1));
+      expect(result.data.user.name).toBe('Pavel');
     });
 
     it('should resolve globalId in `node.id` field', async () => {
@@ -94,8 +94,8 @@ describe('composeWithRelay', () => {
         name
       }`;
       const result = await graphql.graphql(schema, query);
-      expect(result).nested.property('data.node.id').equal(toGlobalId('User', 1));
-      expect(result).nested.property('data.node.name').equal('Pavel');
+      expect(result.data.node.id).toBe(toGlobalId('User', 1));
+      expect(result.data.node.name).toBe('Pavel');
     });
 
     it('should passthru clientMutationId in mutations', async () => {
@@ -116,8 +116,8 @@ describe('composeWithRelay', () => {
         }
       }`;
       const result = await graphql.graphql(schema, query);
-      expect(result).nested.property('data.createUser.record.name').equal('Ok');
-      expect(result).nested.property('data.createUser.clientMutationId').equal('123');
+      expect(result.data.createUser.record.name).toBe('Ok');
+      expect(result.data.createUser.clientMutationId).toBe('123');
     });
   });
 });

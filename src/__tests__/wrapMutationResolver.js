@@ -1,6 +1,5 @@
 /* @flow */
 
-import { expect } from 'chai';
 import { TypeComposer, InputTypeComposer, graphql } from 'graphql-compose';
 import { composeWithRelay } from '../composeWithRelay';
 import { userTypeComposer } from '../__mocks__/userTypeComposer';
@@ -21,62 +20,64 @@ describe('wrapMutationResolver', () => {
   describe('args', () => {
     it('should add `clientMutationId` field to args.input', () => {
       const itc = new InputTypeComposer(fieldConfig.args.input.type);
-      expect(itc.hasField('clientMutationId')).to.be.true;
-      expect(itc.getFieldType('clientMutationId')).equal(GraphQLString);
+      expect(itc.hasField('clientMutationId')).toBe(true);
+      expect(itc.getFieldType('clientMutationId')).toBe(GraphQLString);
     });
 
     it('should create required args.input! if not exists', () => {
-      expect(fieldConfigManyArgsWithoutInput.args).property('input').to.be.ok;
+      expect(fieldConfigManyArgsWithoutInput.args.input).toBeTruthy();
 
-      expect(fieldConfigManyArgsWithoutInput.args).nested
-        .property('input.type')
-        .instanceof(GraphQLNonNull);
+      expect(fieldConfigManyArgsWithoutInput.args.input.type).toBeInstanceOf(GraphQLNonNull);
     });
 
     it('should create args.input if not exists and move all args into it', () => {
-      expect(fieldConfigManyArgsWithoutInput.args).to.have.all.keys(['input']);
+      expect(Object.keys(fieldConfigManyArgsWithoutInput.args)).toEqual(
+        expect.arrayContaining(['input'])
+      );
 
       const type = getNamedType(fieldConfigManyArgsWithoutInput.args.input.type);
       const itc = new InputTypeComposer(type);
-      expect(itc.hasField('sort')).to.be.true;
-      expect(itc.hasField('limit')).to.be.true;
-      expect(itc.hasField('clientMutationId')).to.be.true;
+      expect(itc.hasField('sort')).toBe(true);
+      expect(itc.hasField('limit')).toBe(true);
+      expect(itc.hasField('clientMutationId')).toBe(true);
     });
 
     it('should leave other arg untouched if args.input exists', () => {
-      expect(fieldConfigManyArgsWithInput.args).to.have.all.keys(['input', 'sort', 'limit']);
+      expect(Object.keys(fieldConfigManyArgsWithInput.args)).toEqual(
+        expect.arrayContaining(['input', 'sort', 'limit'])
+      );
 
       const type = getNamedType(fieldConfigManyArgsWithInput.args.input.type);
       const itc = new InputTypeComposer(type);
-      expect(itc.hasField('sort')).to.be.false;
-      expect(itc.hasField('limit')).to.be.false;
-      expect(itc.hasField('clientMutationId')).to.be.true;
+      expect(itc.hasField('sort')).toBe(false);
+      expect(itc.hasField('limit')).toBe(false);
+      expect(itc.hasField('clientMutationId')).toBe(true);
     });
   });
 
   describe('outputType', () => {
     it('should add `clientMutationId` field to payload', () => {
       const tc = new TypeComposer(fieldConfig.type);
-      expect(tc.hasField('clientMutationId')).to.be.true;
-      expect(tc.getFieldType('clientMutationId')).equal(GraphQLString);
+      expect(tc.hasField('clientMutationId')).toBe(true);
+      expect(tc.getFieldType('clientMutationId')).toBe(GraphQLString);
     });
 
     it('should add `nodeId` field to payload', () => {
       const tc = new TypeComposer(fieldConfig.type);
-      expect(tc.hasField('nodeId')).to.be.true;
-      expect(tc.getFieldType('nodeId')).equal(GraphQLID);
+      expect(tc.hasField('nodeId')).toBe(true);
+      expect(tc.getFieldType('nodeId')).toBe(GraphQLID);
     });
   });
 
   describe('resolve', () => {
     it('should passthru `clientMutationId`', async () => {
       const result = await fieldConfig.resolve({}, { input: { clientMutationId: '333' } });
-      expect(result).property('clientMutationId').equal('333');
+      expect(result.clientMutationId).toBe('333');
     });
 
     it('should return `nodeId` with globalId', async () => {
       const result = await fieldConfig.resolve({}, { input: { id: 'newRecord' } });
-      expect(result).property('nodeId').equal(toGlobalId('User', 'newRecord'));
+      expect(result.nodeId).toBe(toGlobalId('User', 'newRecord'));
     });
   });
 });

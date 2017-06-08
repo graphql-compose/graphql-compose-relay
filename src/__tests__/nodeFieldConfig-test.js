@@ -1,6 +1,5 @@
 /* @flow */
 
-import { expect } from 'chai';
 import { graphql } from 'graphql-compose';
 import { findByIdResolver, userTypeComposer } from '../__mocks__/userTypeComposer';
 import { toGlobalId } from '../globalId';
@@ -18,33 +17,35 @@ describe('nodeFieldConfig', () => {
   const config = getNodeFieldConfig(typeToFindByIdMap);
 
   it('should have type GraphQLInterfaceType', () => {
-    expect(config).to.be.ok;
-    expect(config).property('type').instanceof(GraphQLInterfaceType);
-    expect(config).nested.property('type.name').to.equal('Node');
+    expect(config).toBeTruthy();
+    expect(config.type).toBeInstanceOf(GraphQLInterfaceType);
+    expect(config.type.name).toBe('Node');
   });
 
   it('should have args with id', () => {
-    expect(config).nested.property('args.id.type').instanceof(GraphQLNonNull);
+    expect(config.args.id.type).toBeInstanceOf(GraphQLNonNull);
   });
 
   it('should have resolve function', () => {
-    expect(config).respondTo('resolve');
+    expect(config.resolve).toBeDefined();
+    expect(config.resolve.call).toBeDefined();
+    expect(config.resolve.apply).toBeDefined();
   });
 
   it('should return null if args.id not defined', () => {
-    expect(config.resolve({}, {})).to.be.null;
+    expect(config.resolve({}, {})).toBeNull();
   });
 
   it('should return null if findById not defined for type', () => {
-    expect(config.resolve({}, { id: toGlobalId('UnexistedType', 1) })).to.be.null;
+    expect(config.resolve({}, { id: toGlobalId('UnexistedType', 1) })).toBeNull();
   });
 
   it('should return Promise if type exists, but id not exist', () => {
-    expect(config.resolve({}, { id: toGlobalId('User', 666) })).instanceof(Promise);
+    expect(config.resolve({}, { id: toGlobalId('User', 666) })).toBeInstanceOf(Promise);
   });
 
   it('should return Promise with user data', async () => {
     const res = await config.resolve({}, { id: toGlobalId('User', 1) });
-    expect(res).property('name').to.equal('Pavel');
+    expect(res.name).toBe('Pavel');
   });
 });
