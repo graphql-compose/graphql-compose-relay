@@ -42,7 +42,6 @@ describe('composeWithRelay', () => {
   describe('when pass RootQuery type composer', () => {
     it('should add `node` field to RootQuery', () => {
       const nodeField = rootQueryComposer.getField('node');
-      // $FlowFixMe
       expect(nodeField.type).toBeInstanceOf(GraphQLInterfaceType);
       // $FlowFixMe
       expect(nodeField.type.name).toBe('Node');
@@ -52,13 +51,11 @@ describe('composeWithRelay', () => {
   describe('when pass User type composer (not RootQuery)', () => {
     it('should add or override id field', () => {
       const idField = userComposer.getField('id');
-      // $FlowFixMe
       expect(idField.description).toContain('globally unique ID');
     });
 
     it('should make id field NonNull', () => {
       const idField = userComposer.getField('id');
-      // $FlowFixMe
       expect(idField.type).toBeInstanceOf(GraphQLNonNull);
     });
 
