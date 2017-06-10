@@ -1,5 +1,7 @@
 # graphql-compose-relay
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/nodkz/graphql-compose-relay.svg)](https://greenkeeper.io/)
+
 [![travis build](https://img.shields.io/travis/nodkz/graphql-compose-relay.svg)](https://travis-ci.org/nodkz/graphql-compose-relay)
 [![codecov coverage](https://img.shields.io/codecov/c/github/nodkz/graphql-compose-relay.svg)](https://codecov.io/github/nodkz/graphql-compose-relay)
 [![](https://img.shields.io/npm/v/graphql-compose-relay.svg)](https://www.npmjs.com/package/graphql-compose-relay)
