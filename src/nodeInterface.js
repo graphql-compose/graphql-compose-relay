@@ -1,8 +1,6 @@
 /* @flow */
 
-import { graphql } from 'graphql-compose';
-
-const { GraphQLID, GraphQLNonNull, GraphQLInterfaceType } = graphql;
+import { GraphQLID, GraphQLNonNull, GraphQLInterfaceType } from 'graphql-compose/lib/graphql';
 
 const NodeInterface = new GraphQLInterfaceType({
   name: 'Node',

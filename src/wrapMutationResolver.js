@@ -1,13 +1,22 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import { TypeComposer, InputTypeComposer, graphql } from 'graphql-compose';
+import { TypeComposer, InputTypeComposer, type Resolver } from 'graphql-compose';
+import {
+  GraphQLObjectType,
+  getNamedType,
+  GraphQLInputObjectType,
+  GraphQLNonNull,
+} from 'graphql-compose/lib/graphql';
 import { toGlobalId } from './globalId';
-import type { Resolver, WrapMutationResolverOpts } from './definition';
 
-const { GraphQLObjectType, getNamedType, GraphQLInputObjectType, GraphQLNonNull } = graphql;
+export type WrapMutationResolverOpts = {
+  resolverName: string,
+  rootTypeName: string,
+  [optName: string]: mixed,
+};
 
-function upperFirst(str) {
+function upperFirst(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
@@ -47,7 +56,7 @@ export default function wrapMutationResolver<TSource, TContext>(
         type: 'String',
         description:
           'The client mutation ID used by clients like Relay to track the mutation. ' +
-            'If given, returned in the response payload of the mutation.',
+          'If given, returned in the response payload of the mutation.',
       });
     }
   }
@@ -97,7 +106,7 @@ export default function wrapMutationResolver<TSource, TContext>(
         type: 'String',
         description:
           'The client mutation ID used by clients like Relay to track the mutation. ' +
-            'If given, returned in the response payload of the mutation.',
+          'If given, returned in the response payload of the mutation.',
       });
     }
 

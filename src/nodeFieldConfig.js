@@ -1,14 +1,17 @@
 /* @flow */
 /* eslint-disable no-param-reassign, import/prefer-default-export */
-import { getProjectionFromAST, graphql } from 'graphql-compose';
+import { getProjectionFromAST } from 'graphql-compose';
+import { GraphQLID, GraphQLNonNull, type GraphQLResolveInfo } from 'graphql-compose/lib/graphql';
+import type { Resolver, TypeComposer } from 'graphql-compose';
 import { fromGlobalId } from './globalId';
 import NodeInterface from './nodeInterface';
-import type { TypeMapForNode, GraphQLResolveInfo } from './definition';
 
-const { GraphQLID, GraphQLNonNull } = graphql;
+export type TypeMapForRelayNode = {
+  [typeName: string]: { resolver: Resolver<*, *>, tc: TypeComposer },
+};
 
 // this fieldConfig must be set to RootQuery.node field
-export function getNodeFieldConfig(typeMapForNode: TypeMapForNode) {
+export function getNodeFieldConfig(typeMapForRelayNode: TypeMapForRelayNode) {
   return {
     description: 'Fetches an object that has globally unique ID among all types',
     type: NodeInterface,
@@ -29,11 +32,10 @@ export function getNodeFieldConfig(typeMapForNode: TypeMapForNode) {
       }
       const { type, id } = fromGlobalId(args.id);
 
-      if (!typeMapForNode[type]) {
+      if (!typeMapForRelayNode[type]) {
         return null;
       }
-      const findById = typeMapForNode[type].resolver;
-      const tc = typeMapForNode[type].tc;
+      const { tc, resolver: findById } = typeMapForRelayNode[type];
 
       if (findById && findById.resolve && tc) {
         const graphqlType = tc.getType();

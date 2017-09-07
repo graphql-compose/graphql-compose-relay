@@ -1,11 +1,9 @@
 /* @flow */
 
-import { graphql } from 'graphql-compose';
+import { GraphQLInterfaceType, GraphQLNonNull } from 'graphql-compose/lib/graphql';
 import { findByIdResolver, userTypeComposer } from '../__mocks__/userTypeComposer';
 import { toGlobalId } from '../globalId';
 import { getNodeFieldConfig } from '../nodeFieldConfig';
-
-const { GraphQLInterfaceType, GraphQLNonNull } = graphql;
 
 describe('nodeFieldConfig', () => {
   const typeToFindByIdMap = {

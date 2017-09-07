@@ -1,6 +1,6 @@
 /* @flow */
 
-import { composeWithRelay, typeMapForNode, nodeFieldConfig } from './composeWithRelay';
+import { composeWithRelay, TypeMapForRelayNode, nodeFieldConfig } from './composeWithRelay';
 import { fromGlobalId, toGlobalId } from './globalId';
 import NodeInterface from './nodeInterface';
 
@@ -8,7 +8,7 @@ export default composeWithRelay;
 export {
   composeWithRelay,
   NodeInterface,
-  typeMapForNode,
+  TypeMapForRelayNode,
   nodeFieldConfig,
   fromGlobalId,
   toGlobalId,

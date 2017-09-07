@@ -1,18 +1,17 @@
 /* @flow */
 /* eslint-disable no-use-before-define */
 
-import { TypeComposer, graphql } from 'graphql-compose';
+import { TypeComposer } from 'graphql-compose';
+import { GraphQLID, GraphQLNonNull } from 'graphql-compose/lib/graphql';
 import NodeInterface from './nodeInterface';
 import wrapMutationResolver from './wrapMutationResolver';
 import { toGlobalId } from './globalId';
 import { getNodeFieldConfig } from './nodeFieldConfig';
 
-const { GraphQLID, GraphQLNonNull } = graphql;
-
 // all wrapped typeComposers with Relay, stored in this variable
 // for futher type resolving via NodeInterface.resolveType method
-export const typeMapForNode = {};
-export const nodeFieldConfig = getNodeFieldConfig(typeMapForNode);
+export const TypeMapForRelayNode = {};
+export const nodeFieldConfig = getNodeFieldConfig(TypeMapForRelayNode);
 
 export function composeWithRelay(typeComposer: TypeComposer): TypeComposer {
   if (!(typeComposer instanceof TypeComposer)) {
@@ -43,7 +42,7 @@ export function composeWithRelay(typeComposer: TypeComposer): TypeComposer {
         'should have findById resolver.'
     );
   }
-  typeMapForNode[typeComposer.getTypeName()] = {
+  TypeMapForRelayNode[typeComposer.getTypeName()] = {
     resolver: findById,
     tc: typeComposer,
   };

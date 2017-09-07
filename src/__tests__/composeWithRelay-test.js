@@ -1,13 +1,17 @@
 /* @flow */
 
-import { TypeComposer, graphql } from 'graphql-compose';
+import { TypeComposer } from 'graphql-compose';
+import {
+  GraphQLInterfaceType,
+  GraphQLSchema,
+  GraphQLNonNull,
+  graphql,
+} from 'graphql-compose/lib/graphql';
 import { composeWithRelay } from '../composeWithRelay';
 import { userTypeComposer } from '../__mocks__/userTypeComposer';
 import { rootQueryTypeComposer } from '../__mocks__/rootQueryTypeComposer';
 import { rootMutationTypeComposer } from '../__mocks__/rootMutationTypeComposer';
 import { toGlobalId } from '../globalId';
-
-const { GraphQLInterfaceType, GraphQLSchema, GraphQLNonNull } = graphql;
 
 describe('composeWithRelay', () => {
   const userComposer = composeWithRelay(userTypeComposer);
@@ -73,7 +77,7 @@ describe('composeWithRelay', () => {
           name
         }
       }`;
-      const result = await graphql.graphql(schema, query);
+      const result = await graphql(schema, query);
       // $FlowFixMe
       expect(result.data.user.id).toBe(toGlobalId('User', 1));
       // $FlowFixMe
@@ -97,7 +101,7 @@ describe('composeWithRelay', () => {
         id
         name
       }`;
-      const result = await graphql.graphql(schema, query);
+      const result = await graphql(schema, query);
       // $FlowFixMe
       expect(result.data.node.id).toBe(toGlobalId('User', 1));
       // $FlowFixMe
@@ -121,7 +125,7 @@ describe('composeWithRelay', () => {
           clientMutationId
         }
       }`;
-      const result = await graphql.graphql(schema, query);
+      const result = await graphql(schema, query);
       // $FlowFixMe
       expect(result.data.createUser.record.name).toBe('Ok');
       // $FlowFixMe

@@ -1842,9 +1842,9 @@ flat-cache@^1.2.1:
     graceful-fs "^4.1.2"
     write "^0.2.1"
 
-flow-bin@^0.54.0:
-  version "0.54.0"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.54.0.tgz#f2fb0478e9e99702b623c9ed84079a39903bba77"
+flow-bin@^0.54.1:
+  version "0.54.1"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.54.1.tgz#7101bcccf006dc0652714a8aef0c72078a760510"
 
 follow-redirects@0.0.7:
   version "0.0.7"
@@ -2138,9 +2138,9 @@ graceful-fs@^4.1.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
 
-graphql-compose@^2.8.1:
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/graphql-compose/-/graphql-compose-2.8.1.tgz#1add11f22c1fffe5ce748d05ce022f834a646ea1"
+graphql-compose@^2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/graphql-compose/-/graphql-compose-2.9.0.tgz#9277d69e6213dbb56983b87ef1b3b3e27f35eb92"
   dependencies:
     babel-runtime "^6.26.0"
     object-path "^0.11.4"

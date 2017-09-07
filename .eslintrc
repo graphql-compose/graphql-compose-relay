@@ -27,6 +27,7 @@
       "trailingComma": "es5",
     }],
     "no-unused-expressions": 0,
+    "prefer-destructuring": 0,
   },
   "env": {
     "jasmine": true,

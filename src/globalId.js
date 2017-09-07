@@ -1,13 +1,18 @@
 /* @flow */
 
-import type { ResolvedGlobalId, Base64String } from './definition';
+export type Base64String = string;
+
+export type ResolvedGlobalId = {
+  type: string,
+  id: string,
+};
 
 export function base64(i: string): Base64String {
-  return new Buffer(i, 'ascii').toString('base64');
+  return Buffer.from(i, 'ascii').toString('base64');
 }
 
 export function unbase64(i: Base64String): string {
-  return new Buffer(i, 'base64').toString('ascii');
+  return Buffer.from(i, 'base64').toString('ascii');
 }
 
 /**
