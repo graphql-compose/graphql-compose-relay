@@ -35,6 +35,7 @@ export default function wrapMutationResolver<TSource, TContext>(
       }
     } else {
       // create input arg, and put into all current args
+      // $FlowFixMe
       ITC = InputTypeComposer.create({
         name: `Relay${upperFirst(resolverName)}${rootTypeName}Input`,
         fields: newResolver.args,
