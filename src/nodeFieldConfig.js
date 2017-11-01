@@ -17,7 +17,7 @@ export function getNodeFieldConfig(typeMapForRelayNode: TypeMapForRelayNode) {
     type: NodeInterface,
     args: {
       id: {
-        type: new GraphQLNonNull(GraphQLID),
+        type: (new GraphQLNonNull(GraphQLID): $FlowFixMe),
         description: 'The globally unique ID among all types',
       },
     },
@@ -36,7 +36,6 @@ export function getNodeFieldConfig(typeMapForRelayNode: TypeMapForRelayNode) {
         return null;
       }
       const { tc, resolver: findById } = typeMapForRelayNode[type];
-
       if (findById && findById.resolve && tc) {
         const graphqlType = tc.getType();
 

@@ -24,8 +24,9 @@ describe('composeWithRelay', () => {
     });
 
     it('should throw error if got a not TypeComposer', () => {
-      // $FlowFixMe
-      expect(() => composeWithRelay(123)).toThrowError('should provide TypeComposer instance');
+      expect(() => composeWithRelay((123: any))).toThrowError(
+        'should provide TypeComposer instance'
+      );
     });
 
     it('should throw error if TypeComposer without recordIdFn', () => {
@@ -45,9 +46,8 @@ describe('composeWithRelay', () => {
 
   describe('when pass RootQuery type composer', () => {
     it('should add `node` field to RootQuery', () => {
-      const nodeField = rootQueryComposer.getField('node');
+      const nodeField: any = rootQueryComposer.getField('node');
       expect(nodeField.type).toBeInstanceOf(GraphQLInterfaceType);
-      // $FlowFixMe
       expect(nodeField.type.name).toBe('Node');
     });
   });
@@ -77,10 +77,8 @@ describe('composeWithRelay', () => {
           name
         }
       }`;
-      const result = await graphql(schema, query);
-      // $FlowFixMe
+      const result: any = await graphql(schema, query);
       expect(result.data.user.id).toBe(toGlobalId('User', 1));
-      // $FlowFixMe
       expect(result.data.user.name).toBe('Pavel');
     });
 
@@ -101,10 +99,8 @@ describe('composeWithRelay', () => {
         id
         name
       }`;
-      const result = await graphql(schema, query);
-      // $FlowFixMe
+      const result: any = await graphql(schema, query);
       expect(result.data.node.id).toBe(toGlobalId('User', 1));
-      // $FlowFixMe
       expect(result.data.node.name).toBe('Pavel');
     });
 
@@ -125,10 +121,8 @@ describe('composeWithRelay', () => {
           clientMutationId
         }
       }`;
-      const result = await graphql(schema, query);
-      // $FlowFixMe
+      const result: any = await graphql(schema, query);
       expect(result.data.createUser.record.name).toBe('Ok');
-      // $FlowFixMe
       expect(result.data.createUser.clientMutationId).toBe('123');
     });
   });

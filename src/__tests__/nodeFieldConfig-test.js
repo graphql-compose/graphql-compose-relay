@@ -59,8 +59,7 @@ describe('nodeFieldConfig', () => {
     const args = { id: toGlobalId('User', 1) };
     const context = {};
     const info = ({}: any);
-    const res = await config.resolve(source, args, context, info);
-    // $FlowFixMe
+    const res: any = await config.resolve(source, args, context, info);
     expect(res.name).toBe('Pavel');
   });
 });

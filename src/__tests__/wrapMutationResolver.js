@@ -39,8 +39,7 @@ describe('wrapMutationResolver', () => {
         expect.arrayContaining(['input'])
       );
 
-      const type = getNamedType(fieldConfigManyArgsWithoutInput.args.input.type);
-      // $FlowFixMe
+      const type: any = getNamedType(fieldConfigManyArgsWithoutInput.args.input.type);
       const itc = new InputTypeComposer(type);
       expect(itc.hasField('sort')).toBe(true);
       expect(itc.hasField('limit')).toBe(true);
@@ -52,8 +51,7 @@ describe('wrapMutationResolver', () => {
         expect.arrayContaining(['input', 'sort', 'limit'])
       );
 
-      const type = getNamedType(fieldConfigManyArgsWithInput.args.input.type);
-      // $FlowFixMe
+      const type: any = getNamedType(fieldConfigManyArgsWithInput.args.input.type);
       const itc = new InputTypeComposer(type);
       expect(itc.hasField('sort')).toBe(false);
       expect(itc.hasField('limit')).toBe(false);

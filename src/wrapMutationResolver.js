@@ -26,7 +26,7 @@ export default function wrapMutationResolver<TSource, TContext>(
 ): Resolver<TSource, TContext> {
   const { resolverName, rootTypeName } = opts;
 
-  function prepareArgs(newResolver) {
+  function prepareArgs(newResolver: Resolver<TSource, TContext>) {
     let ITC: InputTypeComposer;
     if (newResolver.args.input && newResolver.args.input.type) {
       const inputNamedType = getNamedType(newResolver.args.input.type);
@@ -36,10 +36,9 @@ export default function wrapMutationResolver<TSource, TContext>(
     } else {
       // create input arg, and put into all current args
 
-      // $FlowFixMe
       ITC = InputTypeComposer.create({
         name: `Relay${upperFirst(resolverName)}${rootTypeName}Input`,
-        fields: newResolver.args,
+        fields: (newResolver.args: any),
       });
       newResolver.setArgs({
         input: {

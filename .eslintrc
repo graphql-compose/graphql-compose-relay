@@ -36,6 +36,7 @@
   "globals": {
     "Class": true,
     "$Shape": true,
+    "$FlowFixMe": true,
   },
   "plugins": [
     "flowtype",
