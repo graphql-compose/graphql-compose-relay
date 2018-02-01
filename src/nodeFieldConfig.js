@@ -43,6 +43,7 @@ export function getNodeFieldConfig(typeMapForRelayNode: TypeMapForRelayNode) {
         // it will correctly add required fields for `relation` to `projection`
         let projection;
         if (info) {
+          // $FlowFixMe
           info.returnType = graphqlType;
           projection = getProjectionFromAST(info);
         } else {
