@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint-disable no-use-before-define */
 
-import { TypeComposer } from 'graphql-compose';
+import { type TypeComposer, _ProtoTypeComposer } from 'graphql-compose';
 import { GraphQLID, GraphQLNonNull } from 'graphql-compose/lib/graphql';
 import NodeInterface from './nodeInterface';
 import wrapMutationResolver from './wrapMutationResolver';
@@ -14,7 +14,7 @@ export const TypeMapForRelayNode = {};
 export const nodeFieldConfig = getNodeFieldConfig(TypeMapForRelayNode);
 
 export function composeWithRelay(typeComposer: TypeComposer): TypeComposer {
-  if (!(typeComposer instanceof TypeComposer)) {
+  if (!(typeComposer instanceof _ProtoTypeComposer)) {
     throw new Error('You should provide TypeComposer instance to composeWithRelay method');
   }
 
