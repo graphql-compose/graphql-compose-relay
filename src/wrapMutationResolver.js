@@ -20,13 +20,13 @@ function upperFirst(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export default function wrapMutationResolver<TSource, TContext>(
-  resolver: Resolver<TSource, TContext>,
+export default function wrapMutationResolver(
+  resolver: Resolver,
   opts: WrapMutationResolverOpts
-): Resolver<TSource, TContext> {
+): Resolver {
   const { resolverName, rootTypeName } = opts;
 
-  function prepareArgs(newResolver: Resolver<TSource, TContext>) {
+  function prepareArgs(newResolver: Resolver) {
     let ITC: InputTypeComposer;
     if (newResolver.args.input && newResolver.args.input.type) {
       const inputNamedType = getNamedType(newResolver.args.input.type);

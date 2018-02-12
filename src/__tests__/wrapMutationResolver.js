@@ -13,11 +13,11 @@ import { toGlobalId } from '../globalId';
 
 describe('wrapMutationResolver', () => {
   composeWithRelay(userTypeComposer);
-  const fieldConfig = userTypeComposer.getResolver('createOne').getFieldConfig();
-  const fieldConfigManyArgsWithInput = userTypeComposer
+  const fieldConfig: any = userTypeComposer.getResolver('createOne').getFieldConfig();
+  const fieldConfigManyArgsWithInput: any = userTypeComposer
     .getResolver('manyArgsWithInput')
     .getFieldConfig();
-  const fieldConfigManyArgsWithoutInput = userTypeComposer
+  const fieldConfigManyArgsWithoutInput: any = userTypeComposer
     .getResolver('manyArgsWithoutInput')
     .getFieldConfig();
 

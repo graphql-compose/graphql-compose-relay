@@ -7,7 +7,7 @@ import { fromGlobalId } from './globalId';
 import NodeInterface from './nodeInterface';
 
 export type TypeMapForRelayNode = {
-  [typeName: string]: { resolver: Resolver<*, *>, tc: TypeComposer },
+  [typeName: string]: { resolver: Resolver, tc: TypeComposer },
 };
 
 // this fieldConfig must be set to RootQuery.node field
