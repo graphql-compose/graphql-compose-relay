@@ -1,19 +1,19 @@
 # graphql-compose-relay
 
-[![travis build](https://img.shields.io/travis/nodkz/graphql-compose-relay.svg)](https://travis-ci.org/nodkz/graphql-compose-relay)
-[![codecov coverage](https://img.shields.io/codecov/c/github/nodkz/graphql-compose-relay.svg)](https://codecov.io/github/nodkz/graphql-compose-relay)
+[![travis build](https://img.shields.io/travis/graphql-compose/graphql-compose-relay.svg)](https://travis-ci.org/graphql-compose/graphql-compose-relay)
+[![codecov coverage](https://img.shields.io/codecov/c/github/graphql-compose/graphql-compose-relay.svg)](https://codecov.io/github/graphql-compose/graphql-compose-relay)
 [![](https://img.shields.io/npm/v/graphql-compose-relay.svg)](https://www.npmjs.com/package/graphql-compose-relay)
 [![npm](https://img.shields.io/npm/dt/graphql-compose-relay.svg)](http://www.npmtrends.com/graphql-compose-relay)
-[![Join the chat at https://gitter.im/graphql-compose/Lobby](https://badges.gitter.im/nodkz/graphql-compose.svg)](https://gitter.im/graphql-compose/Lobby)
+[![Join the chat at https://gitter.im/graphql-compose/Lobby](https://badges.gitter.im/graphql-compose/graphql-compose.svg)](https://gitter.im/graphql-compose/Lobby)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-[![Greenkeeper badge](https://badges.greenkeeper.io/nodkz/graphql-compose-relay.svg)](https://greenkeeper.io/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/graphql-compose/graphql-compose-relay.svg)](https://greenkeeper.io/)
 
 
-This is a plugin for [graphql-compose](https://github.com/nodkz/graphql-compose), which wraps GraphQL types with Relay specific things, like `Node` type and interface, `globalId`, `clientMutationId`.
+This is a plugin for [graphql-compose](https://github.com/graphql-compose/graphql-compose), which wraps GraphQL types with Relay specific things, like `Node` type and interface, `globalId`, `clientMutationId`.
 
 Live demo: [https://graphql-compose.herokuapp.com/](https://graphql-compose.herokuapp.com/)
 
-[CHANGELOG](https://github.com/nodkz/graphql-compose-relay/blob/master/CHANGELOG.md)
+[CHANGELOG](https://github.com/graphql-compose/graphql-compose-relay/blob/master/CHANGELOG.md)
 
 Installation
 ============
@@ -24,7 +24,7 @@ Modules `graphql` and `graphql-compose` are in `peerDependencies`, so should be 
 
 Example
 =======
-`TypeComposer` is a [graphql-compose](https://github.com/nodkz/graphql-compose) utility, that wraps GraphQL types and provide bunch of useful methods for type manipulation.
+`TypeComposer` is a [graphql-compose](https://github.com/graphql-compose/graphql-compose) utility, that wraps GraphQL types and provide bunch of useful methods for type manipulation.
 ```js
 import composeWithRelay from 'graphql-compose-relay';
 import { TypeComposer } from 'graphql-compose';
@@ -63,9 +63,9 @@ If something is missing `composeWithRelay` throws error.
 
 Compatible plugins
 ==================
-- [graphql-compose-mongoose](https://github.com/nodkz/graphql-compose-mongoose)
+- [graphql-compose-mongoose](https://github.com/graphql-compose/graphql-compose-mongoose)
 
 
 License
 =======
-[MIT](https://github.com/nodkz/graphql-compose-relay/blob/master/LICENSE.md)
+[MIT](https://github.com/graphql-compose/graphql-compose-relay/blob/master/LICENSE.md)
