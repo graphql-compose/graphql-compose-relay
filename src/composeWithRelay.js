@@ -13,59 +13,63 @@ import { getNodeFieldConfig } from './nodeFieldConfig';
 export const TypeMapForRelayNode = {};
 export const nodeFieldConfig = getNodeFieldConfig(TypeMapForRelayNode);
 
-export function composeWithRelay(typeComposer: TypeComposer): TypeComposer {
-  if (!typeComposer || typeComposer.constructor.name !== 'TypeComposer') {
+export function composeWithRelay<T>(typeComposer: T): T {
+  return (_composeWithRelay((typeComposer: any)): any);
+}
+
+export function _composeWithRelay(tc: TypeComposer): TypeComposer {
+  if (!tc || tc.constructor.name !== 'TypeComposer') {
     throw new Error('You should provide TypeComposer instance to composeWithRelay method');
   }
 
-  if (typeComposer.getTypeName() === 'Query' || typeComposer.getTypeName() === 'RootQuery') {
-    typeComposer.setField('node', nodeFieldConfig);
-    return typeComposer;
+  if (tc.getTypeName() === 'Query' || tc.getTypeName() === 'RootQuery') {
+    tc.setField('node', nodeFieldConfig);
+    return tc;
   }
 
-  if (typeComposer.getTypeName() === 'Mutation' || typeComposer.getTypeName() === 'RootMutation') {
+  if (tc.getTypeName() === 'Mutation' || tc.getTypeName() === 'RootMutation') {
     // just skip
-    return typeComposer;
+    return tc;
   }
 
-  if (!typeComposer.hasRecordIdFn()) {
+  if (!tc.hasRecordIdFn()) {
     throw new Error(
-      `TypeComposer(${typeComposer.getTypeName()}) should have recordIdFn. ` +
+      `TypeComposer(${tc.getTypeName()}) should have recordIdFn. ` +
         'This function returns ID from provided object.'
     );
   }
 
-  const findById = typeComposer.getResolver('findById');
+  const findById = tc.getResolver('findById');
   if (!findById) {
     throw new Error(
-      `TypeComposer(${typeComposer.getTypeName()}) provided to composeWithRelay ` +
+      `TypeComposer(${tc.getTypeName()}) provided to composeWithRelay ` +
         'should have findById resolver.'
     );
   }
-  TypeMapForRelayNode[typeComposer.getTypeName()] = {
+  TypeMapForRelayNode[tc.getTypeName()] = {
     resolver: findById,
-    tc: typeComposer,
+    tc,
   };
 
-  typeComposer.addFields({
+  tc.addFields({
     id: {
       type: new GraphQLNonNull(GraphQLID),
       description: 'The globally unique ID among all types',
-      resolve: source => toGlobalId(typeComposer.getTypeName(), typeComposer.getRecordId(source)),
+      resolve: source => toGlobalId(tc.getTypeName(), tc.getRecordId(source)),
     },
   });
 
-  typeComposer.addInterface(NodeInterface);
+  tc.addInterface(NodeInterface);
 
-  typeComposer.getResolvers().forEach((resolver, resolverName) => {
+  tc.getResolvers().forEach((resolver, resolverName) => {
     if (resolver.kind === 'mutation') {
       const wrappedResolver = wrapMutationResolver(resolver, {
         resolverName,
-        rootTypeName: typeComposer.getTypeName(),
+        rootTypeName: tc.getTypeName(),
       });
-      typeComposer.setResolver(resolverName, wrappedResolver);
+      tc.setResolver(resolverName, wrappedResolver);
     }
   });
 
-  return typeComposer;
+  return tc;
 }
