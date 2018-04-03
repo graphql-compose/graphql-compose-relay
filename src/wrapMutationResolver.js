@@ -73,7 +73,7 @@ export default function wrapMutationResolver(
         }
       }
 
-      if (newResolver._relayIsArgsWrapped) {
+      if ((newResolver: any)._relayIsArgsWrapped) {
         resolveParams.args = resolveParams.args.input;
       }
 
