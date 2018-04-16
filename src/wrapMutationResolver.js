@@ -28,8 +28,8 @@ export default function wrapMutationResolver(
 
   function prepareArgs(newResolver: Resolver) {
     let ITC: InputTypeComposer;
-    if (newResolver.args.input && newResolver.args.input.type) {
-      const inputNamedType = getNamedType(newResolver.args.input.type);
+    if (newResolver.hasArg('input')) {
+      const inputNamedType = getNamedType(newResolver.getArgType('input'));
       if (inputNamedType instanceof GraphQLInputObjectType) {
         ITC = new InputTypeComposer(inputNamedType);
       }
@@ -42,9 +42,8 @@ export default function wrapMutationResolver(
       });
       newResolver.setArgs({
         input: {
-          name: 'input',
           // nonNull due required arg clientMutationId
-          type: new GraphQLNonNull(ITC.getType()),
+          type: () => new GraphQLNonNull(ITC.getType()),
         },
       });
       // $FlowFixMe

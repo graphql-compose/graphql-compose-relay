@@ -54,12 +54,12 @@ describe('composeWithRelay', () => {
 
   describe('when pass User type composer (not RootQuery)', () => {
     it('should add or override id field', () => {
-      const idField = userComposer.getField('id');
+      const idField = userComposer.getFieldConfig('id');
       expect(idField.description).toContain('globally unique ID');
     });
 
     it('should make id field NonNull', () => {
-      const idField = userComposer.getField('id');
+      const idField = userComposer.getFieldConfig('id');
       expect(idField.type).toBeInstanceOf(GraphQLNonNull);
     });
 
