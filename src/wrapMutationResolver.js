@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import { TypeComposer, InputTypeComposer, type Resolver } from 'graphql-compose';
+import type { InputTypeComposer, Resolver } from 'graphql-compose';
 import {
   GraphQLObjectType,
   getNamedType,
@@ -25,18 +25,19 @@ export default function wrapMutationResolver(
   opts: WrapMutationResolverOpts
 ): Resolver {
   const { resolverName, rootTypeName } = opts;
+  const schemaComposer = resolver.constructor.schemaComposer;
 
   function prepareArgs(newResolver: Resolver) {
     let ITC: InputTypeComposer;
     if (newResolver.hasArg('input')) {
       const inputNamedType = getNamedType(newResolver.getArgType('input'));
       if (inputNamedType instanceof GraphQLInputObjectType) {
-        ITC = new InputTypeComposer(inputNamedType);
+        ITC = new schemaComposer.InputTypeComposer(inputNamedType);
       }
     } else {
       // create input arg, and put into all current args
 
-      ITC = InputTypeComposer.create({
+      ITC = schemaComposer.InputTypeComposer.create({
         name: `Relay${upperFirst(resolverName)}${rootTypeName}Input`,
         fields: (newResolver.args: any),
       });
@@ -93,7 +94,7 @@ export default function wrapMutationResolver(
       return;
     }
 
-    const outputTC = new TypeComposer(outputType);
+    const outputTC = new schemaComposer.TypeComposer(outputType);
     if (!outputTC.hasField('nodeId')) {
       outputTC.setField('nodeId', {
         type: 'ID',
