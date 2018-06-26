@@ -3,9 +3,11 @@
   "version": "0.0.0-semantically-released",
   "description": "Plugin for `graphql-compose` which wraps graphql types with Relay specific logic.",
   "files": [
-    "lib"
+    "lib",
+    "mjs"
   ],
   "main": "lib/index.js",
+  "module": "mjs/index.mjs",
   "repository": {
     "type": "git",
     "url": "https://github.com/graphql-compose/graphql-compose-relay.git"
@@ -41,7 +43,7 @@
     "eslint-plugin-prettier": "^2.6.1",
     "flow-bin": "^0.75.0",
     "graphql": "0.13.2",
-    "graphql-compose": "^4.4.0",
+    "graphql-compose": "^4.4.1",
     "jest": "^23.2.0",
     "prettier": "^1.13.6",
     "rimraf": "^2.6.2",
@@ -61,9 +63,11 @@
     ]
   },
   "scripts": {
-    "build": "npm run build-cjs && npm run build-flow",
-    "build-cjs": "rimraf lib && babel src --ignore __tests__,__mocks__ -d lib",
-    "build-flow": "find ./src -name '*.js' -not -path '*/__*' | while read filepath; do cp $filepath `echo $filepath | sed 's/\\/src\\//\\/lib\\//g'`.flow; done",
+    "build": "npm run build-cjs && npm run build-mjs",
+    "build-cjs": "rimraf lib && babel src --ignore __tests__,__mocks__ -d lib && COPY_TO_FOLDER=lib npm run build-flow",
+    "build-mjs": "rimraf mjs && BABEL_ENV=mjs babel src --ignore __tests__,__mocks__ -d mjs && yarn build-mjs-rename && COPY_TO_FOLDER=mjs npm run build-flow",
+    "build-mjs-rename": "find ./mjs -name \"*.js\" -exec bash -c 'mv \"$1\" \"${1%.js}\".mjs' - '{}' \\;",
+    "build-flow": "find ./src -name '*.js' -not -path '*/__*' | while read filepath; do cp $filepath `echo ./${COPY_TO_FOLDER:-lib}$filepath | sed 's/.\\/src\\//\\//g'`.flow; done",
     "watch": "jest --watch",
     "coverage": "jest --coverage",
     "lint": "eslint --ext .js ./src",
