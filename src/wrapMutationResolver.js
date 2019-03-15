@@ -20,24 +20,24 @@ function upperFirst(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export default function wrapMutationResolver(
-  resolver: Resolver,
+export default function wrapMutationResolver<TSource, TContext, TArgs>(
+  resolver: Resolver<TSource, TContext, TArgs>,
   opts: WrapMutationResolverOpts
-): Resolver {
+): Resolver<TSource, TContext, TArgs> {
   const { resolverName, rootTypeName } = opts;
-  const schemaComposer = resolver.constructor.schemaComposer;
+  const sc = resolver.schemaComposer;
 
-  function prepareArgs(newResolver: Resolver) {
-    let ITC: InputTypeComposer;
+  function prepareArgs(newResolver: Resolver<TSource, TContext, TArgs>) {
+    let ITC: InputTypeComposer<TContext>;
     if (newResolver.hasArg('input')) {
       const inputNamedType = getNamedType(newResolver.getArgType('input'));
       if (inputNamedType instanceof GraphQLInputObjectType) {
-        ITC = new schemaComposer.InputTypeComposer(inputNamedType);
+        ITC = sc.createInputTC(inputNamedType);
       }
     } else {
       // create input arg, and put into all current args
 
-      ITC = schemaComposer.InputTypeComposer.create({
+      ITC = sc.createInputTC({
         name: `Relay${upperFirst(resolverName)}${rootTypeName}Input`,
         fields: (newResolver.args: any),
       });
@@ -74,7 +74,7 @@ export default function wrapMutationResolver(
       }
 
       if ((newResolver: any)._relayIsArgsWrapped) {
-        resolveParams.args = resolveParams.args.input;
+        resolveParams.args = (resolveParams.args: any).input;
       }
 
       return prevResolver.resolve(resolveParams).then(res => {
@@ -94,7 +94,7 @@ export default function wrapMutationResolver(
       return;
     }
 
-    const outputTC = new schemaComposer.TypeComposer(outputType);
+    const outputTC = sc.createObjectTC(outputType);
     if (!outputTC.hasField('nodeId')) {
       outputTC.setField('nodeId', {
         type: 'ID',

@@ -2,16 +2,19 @@
 /* eslint-disable no-param-reassign, import/prefer-default-export */
 import { getProjectionFromAST } from 'graphql-compose';
 import { GraphQLID, GraphQLNonNull, type GraphQLResolveInfo } from 'graphql-compose/lib/graphql';
-import type { Resolver, TypeComposer } from 'graphql-compose';
+import type { Resolver, ObjectTypeComposer } from 'graphql-compose';
 import { fromGlobalId } from './globalId';
 import NodeInterface from './nodeInterface';
 
-export type TypeMapForRelayNode = {
-  [typeName: string]: { resolver: Resolver, tc: TypeComposer },
+export type TypeMapForRelayNode<TSource, TContext> = {
+  [typeName: string]: {
+    resolver: Resolver<TSource, TContext>,
+    tc: ObjectTypeComposer<TSource, TContext>,
+  },
 };
 
 // this fieldConfig must be set to RootQuery.node field
-export function getNodeFieldConfig(typeMapForRelayNode: TypeMapForRelayNode) {
+export function getNodeFieldConfig(typeMapForRelayNode: TypeMapForRelayNode<any, any>) {
   return {
     description: 'Fetches an object that has globally unique ID among all types',
     type: NodeInterface,

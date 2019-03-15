@@ -1,6 +1,6 @@
 /* @flow */
 
-import { TypeComposer, Resolver } from 'graphql-compose';
+import { schemaComposer } from 'graphql-compose';
 import {
   GraphQLString,
   GraphQLObjectType,
@@ -24,10 +24,10 @@ export const UserType = new GraphQLObjectType({
   },
 });
 
-export const userTypeComposer = new TypeComposer(UserType);
-userTypeComposer.setRecordIdFn(obj => obj.id);
+export const userTC = schemaComposer.createObjectTC(UserType);
+userTC.setRecordIdFn(obj => obj.id);
 
-export const findByIdResolver = new Resolver({
+export const findByIdResolver = schemaComposer.createResolver({
   name: 'findById',
   kind: 'query',
   type: UserType,
@@ -56,9 +56,9 @@ export const findByIdResolver = new Resolver({
     return Promise.resolve(null);
   },
 });
-userTypeComposer.setResolver('findById', findByIdResolver);
+userTC.setResolver('findById', findByIdResolver);
 
-export const createOneResolver = new Resolver({
+export const createOneResolver = schemaComposer.createResolver({
   name: 'createOne',
   kind: 'mutation',
   type: new GraphQLObjectType({
@@ -89,9 +89,9 @@ export const createOneResolver = new Resolver({
     });
   },
 });
-userTypeComposer.setResolver('createOne', createOneResolver);
+userTC.setResolver('createOne', createOneResolver);
 
-export const manyArgsWithInputResolver = new Resolver({
+export const manyArgsWithInputResolver = schemaComposer.createResolver({
   name: 'manyArgsWithInput',
   kind: 'mutation',
   type: new GraphQLObjectType({
@@ -130,9 +130,9 @@ export const manyArgsWithInputResolver = new Resolver({
     });
   },
 });
-userTypeComposer.setResolver('manyArgsWithInput', manyArgsWithInputResolver);
+userTC.setResolver('manyArgsWithInput', manyArgsWithInputResolver);
 
-export const manyArgsWithoutInputResolver = new Resolver({
+export const manyArgsWithoutInputResolver = schemaComposer.createResolver({
   name: 'manyArgsWithoutInput',
   kind: 'mutation',
   type: new GraphQLObjectType({
@@ -160,4 +160,4 @@ export const manyArgsWithoutInputResolver = new Resolver({
     });
   },
 });
-userTypeComposer.setResolver('manyArgsWithoutInput', manyArgsWithoutInputResolver);
+userTC.setResolver('manyArgsWithoutInput', manyArgsWithoutInputResolver);

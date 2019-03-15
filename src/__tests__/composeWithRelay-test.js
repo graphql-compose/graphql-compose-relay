@@ -1,6 +1,6 @@
 /* @flow */
 
-import { TypeComposer } from 'graphql-compose';
+import { ObjectTypeComposer, schemaComposer } from 'graphql-compose';
 import {
   GraphQLInterfaceType,
   GraphQLSchema,
@@ -8,35 +8,33 @@ import {
   graphql,
 } from 'graphql-compose/lib/graphql';
 import { composeWithRelay } from '../composeWithRelay';
-import { userTypeComposer } from '../__mocks__/userTypeComposer';
-import { rootQueryTypeComposer } from '../__mocks__/rootQueryTypeComposer';
-import { rootMutationTypeComposer } from '../__mocks__/rootMutationTypeComposer';
+import { userTC } from '../__mocks__/userTC';
 import { toGlobalId } from '../globalId';
 
 describe('composeWithRelay', () => {
-  const userComposer = composeWithRelay(userTypeComposer);
-  const rootQueryComposer = composeWithRelay(rootQueryTypeComposer);
-  const rootMutationComposer = composeWithRelay(rootMutationTypeComposer);
+  const userComposer = composeWithRelay(userTC);
+  const queryTC = composeWithRelay(schemaComposer.Query);
+  const mutationTC = composeWithRelay(schemaComposer.Mutation);
 
   describe('basic checks', () => {
-    it('should return TypeComposer', () => {
-      expect(userComposer).toBeInstanceOf(TypeComposer);
+    it('should return ObjectTypeComposer', () => {
+      expect(userComposer).toBeInstanceOf(ObjectTypeComposer);
     });
 
-    it('should throw error if got a not TypeComposer', () => {
+    it('should throw error if got a not ObjectTypeComposer', () => {
       expect(() => composeWithRelay((123: any))).toThrowError(
-        'should provide TypeComposer instance'
+        'should provide ObjectTypeComposer instance'
       );
     });
 
-    it('should throw error if TypeComposer without recordIdFn', () => {
-      const tc = userTypeComposer.clone('AnotherUserType2');
+    it('should throw error if ObjectTypeComposer without recordIdFn', () => {
+      const tc = userTC.clone('AnotherUserType2');
       delete tc.gqType._gqcGetRecordIdFn;
       expect(() => composeWithRelay(tc)).toThrowError('should have recordIdFn');
     });
 
     it('should thow error if typeComposer does not have findById resolver', () => {
-      const tc = userTypeComposer.clone('AnotherUserType');
+      const tc = userTC.clone('AnotherUserType');
       tc.removeResolver('findById');
       expect(() => composeWithRelay(tc)).toThrowError(
         "does not have resolver with name 'findById'"
@@ -46,7 +44,7 @@ describe('composeWithRelay', () => {
 
   describe('when pass RootQuery type composer', () => {
     it('should add `node` field to RootQuery', () => {
-      const nodeField: any = rootQueryComposer.getField('node');
+      const nodeField: any = queryTC.getField('node');
       expect(nodeField.type).toBeInstanceOf(GraphQLInterfaceType);
       expect(nodeField.type.name).toBe('Node');
     });
@@ -64,9 +62,9 @@ describe('composeWithRelay', () => {
     });
 
     it('should resolve globalId in `user.id` field', async () => {
-      rootQueryTypeComposer.setField('user', userTypeComposer.getResolver('findById'));
+      queryTC.setField('user', userTC.getResolver('findById'));
       const schema = new GraphQLSchema({
-        query: rootQueryTypeComposer.getType(),
+        query: queryTC.getType(),
       });
       const query = `{
         user(_id: 1) {
@@ -80,9 +78,9 @@ describe('composeWithRelay', () => {
     });
 
     it('should resolve globalId in `node.id` field', async () => {
-      rootQueryTypeComposer.setField('user', userTypeComposer.getResolver('findById'));
+      queryTC.setField('user', userTC.getResolver('findById'));
       const schema = new GraphQLSchema({
-        query: rootQueryTypeComposer.getType(),
+        query: queryTC.getType(),
       });
       const query = `{
         node(id: "${toGlobalId('User', 1)}") {
@@ -99,10 +97,10 @@ describe('composeWithRelay', () => {
     });
 
     it('should passthru clientMutationId in mutations', async () => {
-      rootMutationComposer.setField('createUser', userTypeComposer.getResolver('createOne'));
+      mutationTC.setField('createUser', userTC.getResolver('createOne'));
       const schema = new GraphQLSchema({
-        query: rootQueryTypeComposer.getType(),
-        mutation: rootMutationComposer.getType(),
+        query: queryTC.getType(),
+        mutation: mutationTC.getType(),
       });
       const query = `mutation {
         createUser(input: { name: "Ok", clientMutationId: "123" }) {

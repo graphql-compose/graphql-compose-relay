@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint-disable no-use-before-define */
 
-import { TypeComposer } from 'graphql-compose';
+import { ObjectTypeComposer } from 'graphql-compose';
 import { GraphQLID, GraphQLNonNull } from 'graphql-compose/lib/graphql';
 import NodeInterface from './nodeInterface';
 import wrapMutationResolver from './wrapMutationResolver';
@@ -17,9 +17,11 @@ export function composeWithRelay<T>(typeComposer: T): T {
   return (_composeWithRelay((typeComposer: any)): any);
 }
 
-export function _composeWithRelay(tc: TypeComposer): TypeComposer {
-  if (!tc || tc.constructor.name !== 'TypeComposer') {
-    throw new Error('You should provide TypeComposer instance to composeWithRelay method');
+export function _composeWithRelay<TSource, TContext>(
+  tc: ObjectTypeComposer<TSource, TContext>
+): ObjectTypeComposer<TSource, TContext> {
+  if (!tc || tc.constructor.name !== 'ObjectTypeComposer') {
+    throw new Error('You should provide ObjectTypeComposer instance to composeWithRelay method');
   }
 
   if (tc.getTypeName() === 'Query' || tc.getTypeName() === 'RootQuery') {
@@ -34,7 +36,7 @@ export function _composeWithRelay(tc: TypeComposer): TypeComposer {
 
   if (!tc.hasRecordIdFn()) {
     throw new Error(
-      `TypeComposer(${tc.getTypeName()}) should have recordIdFn. ` +
+      `ObjectTypeComposer(${tc.getTypeName()}) should have recordIdFn. ` +
         'This function returns ID from provided object.'
     );
   }
@@ -42,7 +44,7 @@ export function _composeWithRelay(tc: TypeComposer): TypeComposer {
   const findById = tc.getResolver('findById');
   if (!findById) {
     throw new Error(
-      `TypeComposer(${tc.getTypeName()}) provided to composeWithRelay ` +
+      `ObjectTypeComposer(${tc.getTypeName()}) provided to composeWithRelay ` +
         'should have findById resolver.'
     );
   }

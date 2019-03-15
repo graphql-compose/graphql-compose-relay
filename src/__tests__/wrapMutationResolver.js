@@ -1,6 +1,6 @@
 /* @flow */
 
-import { TypeComposer, InputTypeComposer } from 'graphql-compose';
+import { schemaComposer } from 'graphql-compose';
 import {
   GraphQLString,
   GraphQLID,
@@ -8,22 +8,22 @@ import {
   getNamedType,
 } from 'graphql-compose/lib/graphql';
 import { composeWithRelay } from '../composeWithRelay';
-import { userTypeComposer } from '../__mocks__/userTypeComposer';
+import { userTC } from '../__mocks__/userTC';
 import { toGlobalId } from '../globalId';
 
 describe('wrapMutationResolver', () => {
-  composeWithRelay(userTypeComposer);
-  const fieldConfig: any = userTypeComposer.getResolver('createOne').getFieldConfig();
-  const fieldConfigManyArgsWithInput: any = userTypeComposer
+  composeWithRelay(userTC);
+  const fieldConfig: any = userTC.getResolver('createOne').getFieldConfig();
+  const fieldConfigManyArgsWithInput: any = userTC
     .getResolver('manyArgsWithInput')
     .getFieldConfig();
-  const fieldConfigManyArgsWithoutInput: any = userTypeComposer
+  const fieldConfigManyArgsWithoutInput: any = userTC
     .getResolver('manyArgsWithoutInput')
     .getFieldConfig();
 
   describe('args', () => {
     it('should add `clientMutationId` field to args.input', () => {
-      const itc = new InputTypeComposer(fieldConfig.args.input.type);
+      const itc = schemaComposer.createInputTC(fieldConfig.args.input.type);
       expect(itc.hasField('clientMutationId')).toBe(true);
       expect(itc.getFieldType('clientMutationId')).toBe(GraphQLString);
     });
@@ -40,7 +40,7 @@ describe('wrapMutationResolver', () => {
       );
 
       const type: any = getNamedType(fieldConfigManyArgsWithoutInput.args.input.type);
-      const itc = new InputTypeComposer(type);
+      const itc = schemaComposer.createInputTC(type);
       expect(itc.hasField('sort')).toBe(true);
       expect(itc.hasField('limit')).toBe(true);
       expect(itc.hasField('clientMutationId')).toBe(true);
@@ -52,7 +52,7 @@ describe('wrapMutationResolver', () => {
       );
 
       const type: any = getNamedType(fieldConfigManyArgsWithInput.args.input.type);
-      const itc = new InputTypeComposer(type);
+      const itc = schemaComposer.createInputTC(type);
       expect(itc.hasField('sort')).toBe(false);
       expect(itc.hasField('limit')).toBe(false);
       expect(itc.hasField('clientMutationId')).toBe(true);
@@ -61,13 +61,13 @@ describe('wrapMutationResolver', () => {
 
   describe('outputType', () => {
     it('should add `clientMutationId` field to payload', () => {
-      const tc = new TypeComposer(fieldConfig.type);
+      const tc = schemaComposer.createObjectTC(fieldConfig.type);
       expect(tc.hasField('clientMutationId')).toBe(true);
       expect(tc.getFieldType('clientMutationId')).toBe(GraphQLString);
     });
 
     it('should add `nodeId` field to payload', () => {
-      const tc = new TypeComposer(fieldConfig.type);
+      const tc = schemaComposer.createObjectTC(fieldConfig.type);
       expect(tc.hasField('nodeId')).toBe(true);
       expect(tc.getFieldType('nodeId')).toBe(GraphQLID);
     });

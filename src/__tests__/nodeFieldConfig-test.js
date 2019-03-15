@@ -1,7 +1,7 @@
 /* @flow */
 
 import { GraphQLInterfaceType, GraphQLNonNull } from 'graphql-compose/lib/graphql';
-import { findByIdResolver, userTypeComposer } from '../__mocks__/userTypeComposer';
+import { findByIdResolver, userTC } from '../__mocks__/userTC';
 import { toGlobalId } from '../globalId';
 import { getNodeFieldConfig } from '../nodeFieldConfig';
 
@@ -9,7 +9,7 @@ describe('nodeFieldConfig', () => {
   const typeToFindByIdMap = {
     User: {
       resolver: findByIdResolver,
-      tc: userTypeComposer,
+      tc: userTC,
     },
   };
   const config = getNodeFieldConfig(typeToFindByIdMap);
