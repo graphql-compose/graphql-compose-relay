@@ -2,27 +2,24 @@
 /* eslint-disable no-use-before-define */
 
 import { ObjectTypeComposer } from 'graphql-compose';
-import { GraphQLID, GraphQLNonNull } from 'graphql-compose/lib/graphql';
-import NodeInterface from './nodeInterface';
 import wrapMutationResolver from './wrapMutationResolver';
 import { toGlobalId } from './globalId';
+import { getNodeInterface } from './nodeInterface';
 import { getNodeFieldConfig } from './nodeFieldConfig';
 
 // all wrapped typeComposers with Relay, stored in this variable
 // for futher type resolving via NodeInterface.resolveType method
 export const TypeMapForRelayNode = {};
-export const nodeFieldConfig = getNodeFieldConfig(TypeMapForRelayNode);
 
-export function composeWithRelay<T>(typeComposer: T): T {
-  return (_composeWithRelay((typeComposer: any)): any);
-}
-
-export function _composeWithRelay<TSource, TContext>(
+export function composeWithRelay<TSource, TContext>(
   tc: ObjectTypeComposer<TSource, TContext>
 ): ObjectTypeComposer<TSource, TContext> {
   if (!tc || tc.constructor.name !== 'ObjectTypeComposer') {
     throw new Error('You should provide ObjectTypeComposer instance to composeWithRelay method');
   }
+
+  const nodeInterface = getNodeInterface(tc.schemaComposer);
+  const nodeFieldConfig = getNodeFieldConfig(TypeMapForRelayNode, nodeInterface);
 
   if (tc.getTypeName() === 'Query' || tc.getTypeName() === 'RootQuery') {
     tc.setField('node', nodeFieldConfig);
@@ -55,13 +52,13 @@ export function _composeWithRelay<TSource, TContext>(
 
   tc.addFields({
     id: {
-      type: new GraphQLNonNull(GraphQLID),
+      type: 'ID!',
       description: 'The globally unique ID among all types',
       resolve: source => toGlobalId(tc.getTypeName(), tc.getRecordId(source)),
     },
   });
 
-  tc.addInterface(NodeInterface);
+  tc.addInterface(nodeInterface);
 
   tc.getResolvers().forEach((resolver, resolverName) => {
     if (resolver.kind === 'mutation') {

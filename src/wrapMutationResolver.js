@@ -1,13 +1,7 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import type { InputTypeComposer, Resolver } from 'graphql-compose';
-import {
-  GraphQLObjectType,
-  getNamedType,
-  GraphQLInputObjectType,
-  GraphQLNonNull,
-} from 'graphql-compose/lib/graphql';
+import { InputTypeComposer, ObjectTypeComposer, type Resolver } from 'graphql-compose';
 import { toGlobalId } from './globalId';
 
 export type WrapMutationResolverOpts = {
@@ -30,13 +24,12 @@ export default function wrapMutationResolver<TSource, TContext, TArgs>(
   function prepareArgs(newResolver: Resolver<TSource, TContext, TArgs>) {
     let ITC: InputTypeComposer<TContext>;
     if (newResolver.hasArg('input')) {
-      const inputNamedType = getNamedType(newResolver.getArgType('input'));
-      if (inputNamedType instanceof GraphQLInputObjectType) {
-        ITC = sc.createInputTC(inputNamedType);
+      ITC = (newResolver.getArgTC('input'): any);
+      if (!(ITC instanceof InputTypeComposer)) {
+        return;
       }
     } else {
       // create input arg, and put into all current args
-
       ITC = sc.createInputTC({
         name: `Relay${upperFirst(resolverName)}${rootTypeName}Input`,
         fields: (newResolver.args: any),
@@ -44,7 +37,7 @@ export default function wrapMutationResolver<TSource, TContext, TArgs>(
       newResolver.setArgs({
         input: {
           // nonNull due required arg clientMutationId
-          type: () => new GraphQLNonNull(ITC.getType()),
+          type: ITC.getTypeNonNull(),
         },
       });
       // $FlowFixMe
@@ -88,13 +81,12 @@ export default function wrapMutationResolver<TSource, TContext, TArgs>(
   }
 
   function prepareType(newResolver, prevResolver) {
-    const outputType = prevResolver.getType();
+    const outputTC = prevResolver.getTypeComposer();
 
-    if (!(outputType instanceof GraphQLObjectType)) {
+    if (!(outputTC instanceof ObjectTypeComposer)) {
       return;
     }
 
-    const outputTC = sc.createObjectTC(outputType);
     if (!outputTC.hasField('nodeId')) {
       outputTC.setField('nodeId', {
         type: 'ID',
