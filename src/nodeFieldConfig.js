@@ -1,10 +1,13 @@
 /* @flow */
 /* eslint-disable no-param-reassign, import/prefer-default-export */
-import { getProjectionFromAST } from 'graphql-compose';
-import { GraphQLID, GraphQLNonNull, type GraphQLResolveInfo } from 'graphql-compose/lib/graphql';
+import {
+  getProjectionFromAST,
+  type InterfaceTypeComposer,
+  type ObjectTypeComposerFieldConfigDefinition,
+} from 'graphql-compose';
+import type { GraphQLResolveInfo } from 'graphql-compose/lib/graphql';
 import type { Resolver, ObjectTypeComposer } from 'graphql-compose';
 import { fromGlobalId } from './globalId';
-import NodeInterface from './nodeInterface';
 
 export type TypeMapForRelayNode<TSource, TContext> = {
   [typeName: string]: {
@@ -14,13 +17,16 @@ export type TypeMapForRelayNode<TSource, TContext> = {
 };
 
 // this fieldConfig must be set to RootQuery.node field
-export function getNodeFieldConfig(typeMapForRelayNode: TypeMapForRelayNode<any, any>) {
+export function getNodeFieldConfig(
+  typeMapForRelayNode: TypeMapForRelayNode<any, any>,
+  nodeInterface: InterfaceTypeComposer<any, any>
+): ObjectTypeComposerFieldConfigDefinition<any, any> {
   return {
     description: 'Fetches an object that has globally unique ID among all types',
-    type: NodeInterface,
+    type: nodeInterface,
     args: {
       id: {
-        type: (new GraphQLNonNull(GraphQLID): $FlowFixMe),
+        type: 'ID!',
         description: 'The globally unique ID among all types',
       },
     },

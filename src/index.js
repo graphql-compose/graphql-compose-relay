@@ -1,15 +1,8 @@
 /* @flow */
 
-import { composeWithRelay, TypeMapForRelayNode, nodeFieldConfig } from './composeWithRelay';
+import { composeWithRelay, TypeMapForRelayNode } from './composeWithRelay';
 import { fromGlobalId, toGlobalId } from './globalId';
-import NodeInterface from './nodeInterface';
+import { getNodeInterface } from './nodeInterface';
 
 export default composeWithRelay;
-export {
-  composeWithRelay,
-  NodeInterface,
-  TypeMapForRelayNode,
-  nodeFieldConfig,
-  fromGlobalId,
-  toGlobalId,
-};
+export { composeWithRelay, getNodeInterface, TypeMapForRelayNode, fromGlobalId, toGlobalId };

@@ -1,20 +1,31 @@
 /* @flow */
 
-import { GraphQLID, GraphQLNonNull, GraphQLInterfaceType } from 'graphql-compose/lib/graphql';
+import { InterfaceTypeComposer, type SchemaComposer } from 'graphql-compose';
 
-const NodeInterface = new GraphQLInterfaceType({
-  name: 'Node',
-  description: 'An object, that can be fetched by the globally unique ID among all types.',
-  fields: () => ({
-    id: {
-      type: new GraphQLNonNull(GraphQLID),
-      description: 'The globally unique ID among all types.',
+export function getNodeInterface<TContex>(
+  sc: SchemaComposer<TContex>
+): InterfaceTypeComposer<any, TContex> {
+  if (sc.hasInstance('Node', InterfaceTypeComposer)) {
+    return (sc.get('Node'): any);
+  }
+
+  const NodeInterface = InterfaceTypeComposer.create(
+    {
+      name: 'Node',
+      description: 'An object, that can be fetched by the globally unique ID among all types.',
+      fields: {
+        id: {
+          type: 'ID!',
+          description: 'The globally unique ID among all types.',
+        },
+      },
+      resolveType: payload => {
+        // `payload.__nodeType` was added to payload via nodeFieldConfig.resolve
+        return payload.__nodeType ? payload.__nodeType : null;
+      },
     },
-  }),
-  resolveType: payload => {
-    // `payload.__nodeType` was added to payload via nodeFieldConfig.resolve
-    return payload.__nodeType ? payload.__nodeType : null;
-  },
-});
+    sc
+  );
 
-export default NodeInterface;
+  return NodeInterface;
+}

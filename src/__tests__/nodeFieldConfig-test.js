@@ -1,9 +1,10 @@
 /* @flow */
 
-import { GraphQLInterfaceType, GraphQLNonNull } from 'graphql-compose/lib/graphql';
+import { schemaComposer, InterfaceTypeComposer } from 'graphql-compose';
 import { findByIdResolver, userTC } from '../__mocks__/userTC';
 import { toGlobalId } from '../globalId';
 import { getNodeFieldConfig } from '../nodeFieldConfig';
+import { getNodeInterface } from '../nodeInterface';
 
 describe('nodeFieldConfig', () => {
   const typeToFindByIdMap = {
@@ -12,16 +13,16 @@ describe('nodeFieldConfig', () => {
       tc: userTC,
     },
   };
-  const config = getNodeFieldConfig(typeToFindByIdMap);
+  const config: any = getNodeFieldConfig(typeToFindByIdMap, getNodeInterface(schemaComposer));
 
   it('should have type GraphQLInterfaceType', () => {
     expect(config).toBeTruthy();
-    expect(config.type).toBeInstanceOf(GraphQLInterfaceType);
-    expect(config.type.name).toBe('Node');
+    expect(config.type).toBeInstanceOf(InterfaceTypeComposer);
+    expect(config.type.getTypeName()).toBe('Node');
   });
 
   it('should have args with id', () => {
-    expect(config.args.id.type).toBeInstanceOf(GraphQLNonNull);
+    expect(config.args.id.type).toBe('ID!');
   });
 
   it('should have resolve function', () => {

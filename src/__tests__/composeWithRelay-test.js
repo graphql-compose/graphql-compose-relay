@@ -29,7 +29,7 @@ describe('composeWithRelay', () => {
 
     it('should throw error if ObjectTypeComposer without recordIdFn', () => {
       const tc = userTC.clone('AnotherUserType2');
-      delete tc.gqType._gqcGetRecordIdFn;
+      delete tc._gqcGetRecordIdFn;
       expect(() => composeWithRelay(tc)).toThrowError('should have recordIdFn');
     });
 
@@ -45,8 +45,8 @@ describe('composeWithRelay', () => {
   describe('when pass RootQuery type composer', () => {
     it('should add `node` field to RootQuery', () => {
       const nodeField: any = queryTC.getField('node');
-      expect(nodeField.type).toBeInstanceOf(GraphQLInterfaceType);
-      expect(nodeField.type.name).toBe('Node');
+      expect(nodeField.type.getType()).toBeInstanceOf(GraphQLInterfaceType);
+      expect(nodeField.type.getTypeName()).toBe('Node');
     });
   });
 
