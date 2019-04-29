@@ -11,10 +11,10 @@ import { getNodeFieldConfig } from './nodeFieldConfig';
 // for futher type resolving via NodeInterface.resolveType method
 export const TypeMapForRelayNode = {};
 
-export function composeWithRelay<TSource, TContext>(
-  tc: ObjectTypeComposer<TSource, TContext>
-): ObjectTypeComposer<TSource, TContext> {
-  if (!tc || tc.constructor.name !== 'ObjectTypeComposer') {
+export function composeWithRelay<TContext>(
+  tc: ObjectTypeComposer<any, TContext>
+): ObjectTypeComposer<any, TContext> {
+  if (!(tc instanceof ObjectTypeComposer)) {
     throw new Error('You should provide ObjectTypeComposer instance to composeWithRelay method');
   }
 
