@@ -26,5 +26,5 @@ export function getNodeInterface<TContex>(
     return (sc.get('Node'): any);
   }
   sc.set('Node', (NodeTC: any));
-  return (NodeInterface: any);
+  return (NodeTC: any);
 }
