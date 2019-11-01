@@ -62,7 +62,7 @@ export default function wrapMutationResolver<TSource, TContext, TArgs>(
       if (resolveParams && resolveParams.args) {
         if (resolveParams.args.input && resolveParams.args.input.clientMutationId) {
           clientMutationId = resolveParams.args.input.clientMutationId;
-          delete resolveParams.args.input.clientMutationId;
+          delete (resolveParams.args.input: any).clientMutationId;
         }
       }
 
