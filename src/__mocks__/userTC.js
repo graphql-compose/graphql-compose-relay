@@ -25,7 +25,7 @@ export const UserType = new GraphQLObjectType({
 });
 
 export const userTC = schemaComposer.createObjectTC(UserType);
-userTC.setRecordIdFn(obj => obj.id);
+userTC.setRecordIdFn((obj) => obj.id);
 
 export const findByIdResolver = schemaComposer.createResolver({
   name: 'findById',
@@ -37,7 +37,7 @@ export const findByIdResolver = schemaComposer.createResolver({
       type: new GraphQLNonNull(GraphQLInt),
     },
   },
-  resolve: resolveParams => {
+  resolve: (resolveParams) => {
     const args = resolveParams.args || {};
     if (args._id.toString() === '1') {
       return Promise.resolve({
@@ -82,7 +82,7 @@ export const createOneResolver = schemaComposer.createResolver({
       }),
     },
   },
-  resolve: resolveParams => {
+  resolve: (resolveParams) => {
     return Promise.resolve({
       recordId: resolveParams.args.input.id,
       record: (resolveParams.args && resolveParams.args.input) || {},
@@ -123,7 +123,7 @@ export const manyArgsWithInputResolver = schemaComposer.createResolver({
       type: GraphQLInt,
     },
   },
-  resolve: resolveParams => {
+  resolve: (resolveParams) => {
     return Promise.resolve({
       recordId: resolveParams.args.input.id,
       record: (resolveParams.args && resolveParams.args.input) || {},
@@ -153,7 +153,7 @@ export const manyArgsWithoutInputResolver = schemaComposer.createResolver({
       type: GraphQLInt,
     },
   },
-  resolve: resolveParams => {
+  resolve: (resolveParams) => {
     return Promise.resolve({
       recordId: resolveParams.args.input.id,
       record: (resolveParams.args && resolveParams.args.input) || {},

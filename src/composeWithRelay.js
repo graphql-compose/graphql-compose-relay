@@ -54,7 +54,7 @@ export function composeWithRelay<TContext>(
     id: {
       type: 'ID!',
       description: 'The globally unique ID among all types',
-      resolve: source => toGlobalId(tc.getTypeName(), tc.getRecordId(source)),
+      resolve: (source) => toGlobalId(tc.getTypeName(), tc.getRecordId(source)),
     },
   });
 

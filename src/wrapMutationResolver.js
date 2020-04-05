@@ -56,7 +56,7 @@ export default function wrapMutationResolver<TSource, TContext, TArgs>(
   }
 
   function prepareResolve(newResolver, prevResolver) {
-    newResolver.setResolve(resolveParams => {
+    newResolver.setResolve((resolveParams) => {
       let clientMutationId;
 
       if (resolveParams && resolveParams.args) {
@@ -70,7 +70,7 @@ export default function wrapMutationResolver<TSource, TContext, TArgs>(
         resolveParams.args = (resolveParams.args: any).input;
       }
 
-      return prevResolver.resolve(resolveParams).then(res => {
+      return prevResolver.resolve(resolveParams).then((res) => {
         res.nodeId = toGlobalId(rootTypeName, res.recordId);
         if (clientMutationId) {
           res.clientMutationId = clientMutationId;

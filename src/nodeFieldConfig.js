@@ -69,7 +69,7 @@ export function getNodeFieldConfig(
             info,
             projection,
           })
-          .then(res => {
+          .then((res) => {
             if (!res) return res;
             res.__nodeType = graphqlType;
             return res;
